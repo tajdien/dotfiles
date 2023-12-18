@@ -77,7 +77,10 @@ require("lazy").setup({
 			require("gitsigns").setup()
 		end,
 	},
-
+	{
+		"folke/persistence.nvim",
+		event = "BufReadPre", -- this will only start session saving when an actual file was opened
+	},
 	{
 		"akinsho/toggleterm.nvim",
 		version = "*",

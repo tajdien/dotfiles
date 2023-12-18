@@ -1,6 +1,7 @@
 -- https://github.com/lewis6991/gitsigns.nvim
 return {
-	["gitsigns"] = {
+	"lewis6991/gitsigns.nvim",
+	opt = {
 		signs = {
 			add = { text = "│" },
 			change = { text = "│" },

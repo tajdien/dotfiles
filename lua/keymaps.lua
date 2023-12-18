@@ -31,6 +31,17 @@ map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 -- Jump to previous/next position with []
 -- map("n", "<D-[>", "<C-o>", { silent = true, desc = "Jump to previous position" })
 -- map("n", "<D-]", "<C-i>", { silent = true, desc = "Jump to next position" })
+-- map("n", "<C-[", "<cmd>BufferLineCycleNext<cr>", { noremap = true, desc = "Move to next buffer" })
+-- map("n", "<C-]", "<cmd>BufferLineCyclePrev<cr>", { noremap = true, desc = "Move to prev buffer" })
 --
--- map("n", "<AS-[", "<cmd>BufferLineCycleNext<cr>", { silent = true, desc = "Jump to previous position" })
--- map("n", "<C-]", "<cmd>BufferLineCyclePrev<cr>", { silent = true, desc = "Jump to next position" })
+-- map("n", "<A-[", "<cmd>BufferLineCycleNext<cr>", { noremap = true, desc = "Move to next buffer" })
+-- map("n", "<A-]", "<cmd>BufferLineCyclePrev<cr>", { noremap = true, desc = "Move to prev buffer" })
+--
+-- map("n", "<D-[", "<cmd>BufferLineCycleNext<cr>", { noremap = true, desc = "Move to next buffer" })
+-- map("n", "<C-]", "<cmd>BufferLineCyclePrev<cr>", { noremap = true, desc = "Move to prev buffer" })
+
+-- Resize windows using option + arrow keys
+vim.keymap.set("n", "<A-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
+vim.keymap.set("n", "<A-S-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
+vim.keymap.set("n", "<A-Left>", "<cmd>vertical resize +2<cr>", { desc = "Decrease window width" })
+vim.keymap.set("n", "<A-Right>", "<cmd>vertical resize -2<cr>", { desc = "Increase window width" })

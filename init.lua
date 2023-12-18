@@ -5,13 +5,12 @@ local uv = vim.uv or vim.loop
 -- 1. alwatys open Neotree
 -- 2. make bufferline work with keybindings
 -- 3. telescope search
--- 4. vim surround does not work
 -- 5. configure dashboard
--- configure shift { } to jumplist ctrl I O
 -- only move certain lines when scrolling wiht mousewheel
 -- install turbo console.log { ""gaelph/logsitter" },
 -- clean up file
 -- move plugins to plugin folder
+-- Make copy pasta work in kitty
 
 -- Leader set to <Space>
 vim.g.mapleader = " "
@@ -40,6 +39,7 @@ vim.opt.rtp:prepend(lazypath)
 -- We can configure plugins using the `config` key.
 -- We can also configure plugins after the setup call, They will be available at runtime
 require("lazy").setup({
+	--	spec = { import = "plugins" },
 	-- theme
 	-- { "Mofiqul/dracula.nvim" },
 	{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
@@ -52,12 +52,49 @@ require("lazy").setup({
 	{ "tpope/vim-repeat" }, -- Enables repeating of commands from plugins with .
 	{ "VonHeikemen/fine-cmdline.nvim", dependencies = { { "MunifTanjim/nui.nvim" } } }, -- floating cmd line
 	{ "tzachar/highlight-undo.nvim" }, -- Highlights the last undo and redo
-	{ "lewis6991/gitsigns.nvim" }, -- Git signs ( left side shows changes )
-	{ "echasnovski/mini.nvim" }, -- Auto close and open pairs like {[ ...
+	{ "echwsnovski/mini.nvim" }, -- Auto close and open pairs like {[ ...
+	{
+		"tzachar/local-highlight.nvim",
+		config = function()
+			require("local-highlight").setup()
+		end,
+	},
 	{
 		"numToStr/Comment.nvim",
 		config = function()
 			require("Comment").setup({})
+		end,
+	},
+	{
+		"karb94/neoscroll.nvim",
+		config = function()
+			require("neoscroll").setup({})
+		end,
+	},
+	{
+		"https://github.com/lewis6991/gitsigns.nvim",
+		config = function()
+			require("gitsigns").setup()
+		end,
+	},
+
+	{
+		"akinsho/toggleterm.nvim",
+		version = "*",
+		config = function()
+			require("toggleterm").setup({
+				-- size can be a number or function which is passed the current terminal
+				size = 20,
+				open_mapping = [[<c-\>]],
+				hide_numbers = true, -- hide the number column in toggleterm buffers
+				shade_filetypes = {},
+				shade_terminals = true,
+				shading_factor = 1, -- the degree by which to darken to terminal colour, default: 1 for dark backgrounds, 3 for light
+				start_in_insert = true,
+				insert_mappings = true, -- whether or not the open mapping applies in insert mode
+				persist_size = true,
+				direction = "horizontal",
+			})
 		end,
 	},
 
@@ -139,13 +176,25 @@ require("lazy").setup({
 		end,
 		dependencies = { { "nvim-tree/nvim-web-devicons" } },
 	},
-
 	-- tabs as tabs ??
 	{
 		"akinsho/bufferline.nvim",
+		keys = {
+			{ "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
+			{ "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },
+			{ "<leader>bo", "<Cmd>BufferLineCloseOthers<CR>", desc = "Delete other buffers" },
+			{ "<leader>br", "<Cmd>BufferLineCloseRight<CR>", desc = "Delete buffers to the right" },
+			{ "<leader>bl", "<Cmd>BufferLineCloseLeft<CR>", desc = "Delete buffers to the left" },
+			{ "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" },
+			{ "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
+			{ "[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" },
+			{ "]b", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
+		},
 		config = function()
 			require("bufferline").setup({
 				options = {
+					diagnostics = "nvim_lsp",
+					always_show_bufferline = true,
 					offsets = {
 						{
 							filetype = "neo-tree",
@@ -190,28 +239,6 @@ require("lazy").setup({
 		end,
 	},
 
-	-- todo: what was that again?
-	{
-		"NvChad/nvterm",
-		config = function()
-			require("nvterm").setup()
-		end,
-	},
-
-	-- lazy.nvim
-	-- {
-	-- 	"folke/noice.nvim",
-	-- 	event = "VeryLazy",
-	-- 	dependencies = {
-	-- 		"MunifTanjim/nui.nvim",
-	-- 		-- OPTIONAL:
-	-- 		--   `nvim-notify` is only needed, if you want to use the notification view.
-	-- 		--   If not available, we use `mini` as the fallback
-	-- 		"rcarriga/nvim-notify",
-	-- 	},
-	-- },
-	--
-
 	-- { "https://github.com/nvim-tree/nvim-tree.lua", dependencies = { "kyazdani42/nvim-web-devicons" } },
 
 	-- highlights unique characters when navigating with fFtT
@@ -251,16 +278,10 @@ vim.keymap.set("n", "<leader>sr", require("telescope.builtin").resume, { desc = 
 -- vim.keymap.set("n", "<leader>sG", ":LiveGrepGitRoot<cr>", { desc = "[S]earch by [G]rep on Git Root" })
 
 -- todo
--- import and configure plugins
 -- local plugin_config = require("plugins")
 -- for plugin, config in pairs(plugin_config) do
 -- 	require(plugin).setup(config)
 -- end
-
-local nvTerm = require("nvterm.terminal")
-vim.keymap.set("n", "<leader>t", function()
-	nvTerm.toggle("vertical")
-end, { noremap = true, desc = "toggles terminal", silent = true })
 
 -- Restore last session
 vim.api.nvim_set_keymap("n", "<leader>qs", [[<cmd>lua require("persistence").load()<cr>]], {})

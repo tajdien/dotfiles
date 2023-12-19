@@ -5,9 +5,7 @@ local uv = vim.uv or vim.loop
 -- 1. alwatys open Neotree
 -- 2. make bufferline work with keybindings
 -- 3. telescope search
--- 5. configure dashboard
 -- only move certain lines when scrolling wiht mousewheel
--- install turbo console.log { ""gaelph/logsitter" },
 -- clean up file
 -- move plugins to plugin folder
 -- Make copy pasta work in kitty
@@ -217,14 +215,6 @@ require("lazy").setup({
 		build = ":TSUpdate",
 	},
 
-	{
-		"nvimdev/dashboard-nvim",
-		event = "VimEnter",
-		config = function()
-			require("dashboard").setup({})
-		end,
-		dependencies = { { "nvim-tree/nvim-web-devicons" } },
-	},
 	-- tabs as tabs ??
 	{
 		"akinsho/bufferline.nvim",

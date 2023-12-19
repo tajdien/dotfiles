@@ -77,10 +77,17 @@ require("lazy").setup({
 			require("gitsigns").setup()
 		end,
 	},
+
 	{
-		"folke/persistence.nvim",
-		event = "BufReadPre", -- this will only start session saving when an actual file was opened
+		"rmagatti/auto-session",
+		config = function()
+			require("auto-session").setup({
+				log_level = "error",
+				auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
+			})
+		end,
 	},
+
 	{
 		"akinsho/toggleterm.nvim",
 		version = "*",
@@ -100,9 +107,48 @@ require("lazy").setup({
 			})
 		end,
 	},
+	{
+		"rest-nvim/rest.nvim",
+		requires = { "nvim-lua/plenary.nvim" },
+		config = function()
+			require("rest-nvim").setup({
+				result_split_in_place = true,
+				-- stay in current windows (.http file) or change to results window (default)
+				stay_in_current_window_after_split = true,
+				-- Encode URL before making request
+				encode_url = true,
+				-- Highlight request on run
+				highlight = {
+					enabled = true,
+					timeout = 150,
+				},
+				result = {
+					-- toggle showing URL, HTTP info, headers at top the of result window
+					show_url = true,
+					-- show the generated curl command in case you want to launch
+					-- the same request via the terminal (can be verbose)
+					show_curl_command = false,
+					show_http_info = true,
+					show_headers = true,
+					show_statistics = false,
+					formatters = {
+						json = "jq",
+						html = function(body)
+							return vim.fn.system({ "tidy", "-i", "-q", "-" }, body)
+						end,
+					},
+				},
+			})
+		end,
+	},
+	{
+		"David-Kunz/jester",
+		config = function()
+			require("jester").setup({})
+		end,
+	}, -- jest
+	{ "https://github.com/gaelph/logsitter.nvim" },
 
-	-- todo
-	{ "David-Kunz/jester" }, -- jest
 	-- TODO: broken: try to fix
 	-- {
 	-- 	"https://github.com/ggandor/leap.nvim",
@@ -182,17 +228,6 @@ require("lazy").setup({
 	-- tabs as tabs ??
 	{
 		"akinsho/bufferline.nvim",
-		keys = {
-			{ "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
-			{ "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },
-			{ "<leader>bo", "<Cmd>BufferLineCloseOthers<CR>", desc = "Delete other buffers" },
-			{ "<leader>br", "<Cmd>BufferLineCloseRight<CR>", desc = "Delete buffers to the right" },
-			{ "<leader>bl", "<Cmd>BufferLineCloseLeft<CR>", desc = "Delete buffers to the left" },
-			{ "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" },
-			{ "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
-			{ "[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" },
-			{ "]b", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
-		},
 		config = function()
 			require("bufferline").setup({
 				options = {
@@ -209,6 +244,17 @@ require("lazy").setup({
 				},
 			})
 		end,
+		-- keys = {
+		-- 	{ "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
+		-- 	{ "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },
+		-- 	{ "<leader>bo", "<Cmd>BufferLineCloseOthers<CR>", desc = "Delete other buffers" },
+		-- 	{ "<leader>br", "<Cmd>BufferLineCloseRight<CR>", desc = "Delete buffers to the right" },
+		-- 	{ "<leader>bl", "<Cmd>BufferLineCloseLeft<CR>", desc = "Delete buffers to the left" },
+		-- 	{ "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" },
+		-- 	{ "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
+		-- 	{ "[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" },
+		-- 	{ "]b", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
+		-- },
 	},
 
 	-- Tree
@@ -256,38 +302,67 @@ require("lazy").setup({
 	},
 })
 
+vim.keymap.set("n", "<leader>hc", "<Plug>RestNvim", { desc = "[H]ttp [c]ursor" })
+vim.keymap.set("n", "<leader>lg", "<cmd>lua require('logsitter').log()<cr>", { desc = "[L]o[g]" })
+-- vim.api.nvim_create_augroup("LogSitter", { clear = true })
+-- vim.api.nvim_create_autocmd("FileType", {
+-- 	group = "Logsitter",
+-- 	pattern = "javascript,go,lua",
+-- 	callback = function()
+-- 		vim.keymap.set("n", "<leader>lg", function()
+-- 			require("logsitter").log()
+-- 		end)
+-- 	end,
+-- })
+
 vim.cmd([[colorscheme catppuccin]]) -- colorscheme
 
 -- [[ Telescope KEYBINDS ]]
 -- See `:help telescope.builtin`
 vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles, { desc = "[?] Find recently opened files" })
 vim.keymap.set("n", "<leader><space>", require("telescope.builtin").buffers, { desc = "[ ] Find existing buffers" })
-vim.keymap.set("n", "<leader>ff", function()
-	-- You can pass additional configuration to telescope to change theme, layout, etc.
-	require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
-		winblend = 20,
-		previewer = true,
-	}))
-end, { desc = "Fuzzily search in current buffer" })
+-- vim.keymap.set("n", "<leader>ff", function()
+-- 	-- You can pass additional configuration to telescope to change theme, layout, etc.
+-- 	require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
+-- 		winblend = 20,
+-- 		previewer = true,
+-- 	}))
+-- end, { desc = "Fuzzily search in current buffer" })
+vim.keymap.set(
+	"n",
+	"<leader>ff",
+	require("telescope.builtin").current_buffer_fuzzy_find,
+	{ desc = "Fuzzily search in current buffer" }
+)
 
 vim.keymap.set("n", "<leader>sf", require("telescope.builtin").find_files, { desc = "[S]earch [F]iles" })
+vim.keymap.set("n", "<leader>ss", require("telescope.builtin").symbols, { desc = "[S]earch [F]iles" })
 vim.keymap.set("n", "<C-S>o", require("telescope.builtin").find_files, { desc = "[S]earch [F]iles" })
 vim.keymap.set("n", "<leader>sh", require("telescope.builtin").help_tags, { desc = "[S]earch [H]elp" })
 vim.keymap.set("n", "<leader>sw", require("telescope.builtin").grep_string, { desc = "[S]earch current [W]ord" })
 vim.keymap.set("n", "<leader>sg", require("telescope.builtin").live_grep, { desc = "[S]earch by [G]rep" })
 vim.keymap.set("n", "<leader>sp", require("telescope.builtin").diagnostics, { desc = "[S]earch [D]iagnostics" })
 vim.keymap.set("n", "<leader>sr", require("telescope.builtin").resume, { desc = "[S]earch [R]esume" })
--- vim.keymap.set("n", "<leader>gf", require("telescope.builtin").git_files, { desc = "Search [G]it [F]iles" })
--- vim.keymap.set("n", "<leader>sG", ":LiveGrepGitRoot<cr>", { desc = "[S]earch by [G]rep on Git Root" })
 
--- todo
--- local plugin_config = require("plugins")
--- for plugin, config in pairs(plugin_config) do
--- 	require(plugin).setup(config)
--- end
+-- :lua require"jester".run()
+-- ```
+--
+-- ### Run current file
+--
+-- ```
+-- :lua require"jester".run_file()
+-- ```
+--
+-- ### Run last test(s)
+--
+-- ```
+-- :lua require"jester".run_last()
+-- ```
+
+-- nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
 -- Restore last session
-vim.api.nvim_set_keymap("n", "<leader>qs", [[<cmd>lua require("persistence").load()<cr>]], {})
+-- vim.api.nvim_set_keymap("n", "<leader>qs", [[<cmd>lua require("persistence").load()<cr>]], {})
 
 -- [[ Basic Keymaps ]]
 
@@ -313,6 +388,8 @@ require("conform").setup({
 		graphql = { "prettier" },
 	},
 	format_on_save = { timeout_ms = 500, lsp_fallback = true }, -- format on save
+	async = true,
+	quiet = true,
 })
 
 -- [[ Neo-tree ]]
@@ -460,6 +537,8 @@ vim.defer_fn(function()
 			"markdown",
 			"regex",
 			"markdown_inline",
+			"http",
+			"json",
 		},
 
 		-- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
@@ -556,23 +635,22 @@ local on_attach = function(_, bufnr)
 		vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
 	end
 
-	-- Rename
-	nmap("<leader>re", vim.lsp.buf.rename, "[R]e[n]ame")
-	nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
-
 	nmap("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+	-- Lesser used LSP functionality
+	nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 	nmap("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
 	nmap("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
 	nmap("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
 	nmap("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
-	-- nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+
+	-- Rename
+	nmap("<leader>re", vim.lsp.buf.rename, "[R]e[n]ame")
+	nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 
 	-- See `:help K` for why this keymap
 	nmap("K", vim.lsp.buf.hover, "Hover Documentation")
 	nmap("<C-k>", vim.lsp.buf.signature_help, "Signature Documentation")
 
-	-- Lesser used LSP functionality
-	nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 	-- nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
 	-- nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
 	-- nmap('<leader>wl', function()

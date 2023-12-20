@@ -32,9 +32,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- [[ Configure plugins ]]
--- Here is where we install our plugins.
--- We can configure plugins using the `config` key.
--- We can also configure plugins after the setup call, They will be available at runtime
 require("lazy").setup({
 	--	spec = { import = "plugins" },
 	-- theme
@@ -43,7 +40,7 @@ require("lazy").setup({
 	{ "tpope/vim-sleuth" }, -- Detect tabstop and shiftwidth automatically
 	{ "github/copilot.vim" }, -- copilot
 	{ "folke/which-key.nvim", ots = {} }, -- show which keybinds are available
-	{ "lukas-reineke/indent-blankline.nvim", main = "ibl" }, -- Intention lines
+	-- { "lukas-reineke/indent-blankline.nvim", main = "ibl" }, -- Intention lines
 	{ "stevearc/conform.nvim" }, -- formatter
 	{ "justinmk/vim-sneak" }, -- Sneak with S
 	{ "tpope/vim-repeat" }, -- Enables repeating of commands from plugins with .
@@ -92,15 +89,14 @@ require("lazy").setup({
 			require("toggleterm").setup({
 				-- size can be a number or function which is passed the current terminal
 				size = 20,
-				open_mapping = [[<c-\>]],
+				open_mapping = [[<C-t>]],
 				hide_numbers = true, -- hide the number column in toggleterm buffers
-				shade_filetypes = {},
 				shade_terminals = true,
-				shading_factor = 1, -- the degree by which to darken to terminal colour, default: 1 for dark backgrounds, 3 for light
-				start_in_insert = true,
+				shading_factor = 1, -- degree by which to darken to terminal colour, default: 1 for dark backgrounds, 3 for light
+				start_in_insert = true, -- start terminal in insert mode
 				insert_mappings = true, -- whether or not the open mapping applies in insert mode
 				persist_size = true,
-				direction = "horizontal",
+				direction = "float",
 			})
 		end,
 	},
@@ -232,6 +228,33 @@ require("lazy").setup({
 				},
 			})
 		end,
+	},
+
+	{
+		opts = {
+			indent = {
+				char = "│",
+				tab_char = "│",
+			},
+			scope = { enabled = false },
+			exclude = {
+				filetypes = {
+					"help",
+					"alpha",
+					"dashboard",
+					"neo-tree",
+					"Trouble",
+					"trouble",
+					"lazy",
+					"mason",
+					"notify",
+					"toggleterm",
+					"lazyterm",
+				},
+			},
+		},
+		"lukas-reineke/indent-blankline.nvim",
+		main = "ibl",
 	},
 
 	-- Tree

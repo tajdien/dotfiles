@@ -3,7 +3,6 @@ local uv = vim.uv or vim.loop
 
 -- todo
 -- 1. alwatys open Neotree
--- 2. make bufferline work with keybindings
 -- 3. telescope search
 -- only move certain lines when scrolling wiht mousewheel
 -- clean up file
@@ -222,7 +221,6 @@ require("lazy").setup({
 			require("bufferline").setup({
 				options = {
 					diagnostics = "nvim_lsp",
-					always_show_bufferline = true,
 					offsets = {
 						{
 							filetype = "neo-tree",
@@ -234,17 +232,6 @@ require("lazy").setup({
 				},
 			})
 		end,
-		-- keys = {
-		-- 	{ "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
-		-- 	{ "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },
-		-- 	{ "<leader>bo", "<Cmd>BufferLineCloseOthers<CR>", desc = "Delete other buffers" },
-		-- 	{ "<leader>br", "<Cmd>BufferLineCloseRight<CR>", desc = "Delete buffers to the right" },
-		-- 	{ "<leader>bl", "<Cmd>BufferLineCloseLeft<CR>", desc = "Delete buffers to the left" },
-		-- 	{ "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" },
-		-- 	{ "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
-		-- 	{ "[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" },
-		-- 	{ "]b", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
-		-- },
 	},
 
 	-- Tree
@@ -349,7 +336,7 @@ vim.keymap.set("n", "<leader>sr", require("telescope.builtin").resume, { desc = 
 -- :lua require"jester".run_last()
 -- ```
 
--- nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+--
 
 -- Restore last session
 -- vim.api.nvim_set_keymap("n", "<leader>qs", [[<cmd>lua require("persistence").load()<cr>]], {})
@@ -430,7 +417,22 @@ vim.keymap.set("n", "<leader>E", "<cmd>Neotree toggle", { desc = "Toggles Neotre
 
 -- [[ mini.pairs ]]
 -- https://github.com/echasnovski/mini.pairs
-require("mini.pairs").setup()
+require("mini.pairs").setup({
+	-- todo
+	-- mappings = {
+	--   ['('] = { action = 'open', pair = '()', neigh_pattern = '[^\\].' },
+	--   ['['] = { action = 'open', pair = '[]', neigh_pattern = '[^\\].' },
+	--   ['{'] = { action = 'open', pair = '{}', neigh_pattern = '[^\\].' },
+	--
+	--   [')'] = { action = 'close', pair = '()', neigh_pattern = '[^\\].' },
+	--   [']'] = { action = 'close', pair = '[]', neigh_pattern = '[^\\].' },
+	--   ['}'] = { action = 'close', pair = '{}', neigh_pattern = '[^\\].' },
+	--
+	--   ['"'] = { action = 'closeopen', pair = '""', neigh_pattern = '[^\\].', register = { cr = false } },
+	--   ["'"] = { action = 'closeopen', pair = "''", neigh_pattern = '[^%a\\].', register = { cr = false } },
+	--   ['`'] = { action = 'closeopen', pair = '``', neigh_pattern = '[^\\].', register = { cr = false } },
+	-- },
+})
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
@@ -632,6 +634,7 @@ local on_attach = function(_, bufnr)
 	nmap("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
 	nmap("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
 	nmap("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
+	nmap("<leader>ss", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
 
 	-- Rename
 	nmap("<leader>re", vim.lsp.buf.rename, "[R]e[n]ame")

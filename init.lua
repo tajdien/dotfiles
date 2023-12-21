@@ -35,7 +35,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	--	spec = { import = "plugins" },
 	-- theme
-	{ "Mofiqul/dracula.nvim" },
+	-- { "Mofiqul/dracula.nvim" },
 	{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
 	{ "tpope/vim-sleuth" }, -- Detect tabstop and shiftwidth automatically
 	{ "github/copilot.vim" }, -- copilot
@@ -385,7 +385,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 vim.cmd([[colorscheme catppuccin]]) -- colorscheme
--- vim.cmd([[colorscheme dracula]]) -- colorscheme
 
 -- [[ Telescope KEYBINDS ]]
 -- See `:help telescope.builtin`
@@ -560,6 +559,7 @@ require("telescope").setup({
 		},
 	},
 })
+
 -- To get ui-select loaded and working with telescope, you need to call
 -- load_extension, somewhere after setup function:
 require("telescope").load_extension("ui-select")

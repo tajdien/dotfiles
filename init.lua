@@ -35,7 +35,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	--	spec = { import = "plugins" },
 	-- theme
-	-- { "Mofiqul/dracula.nvim" },
+	{ "Mofiqul/dracula.nvim" },
 	{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
 	{ "tpope/vim-sleuth" }, -- Detect tabstop and shiftwidth automatically
 	{ "github/copilot.vim" }, -- copilot
@@ -71,6 +71,68 @@ require("lazy").setup({
 			require("gitsigns").setup()
 		end,
 	},
+	{ "nvim-telescope/telescope-ui-select.nvim" },
+	-- todo
+	-- {
+	-- 	"zbirenbaum/copilot.lua",
+	-- 	cmd = "Copilot",
+	-- 	build = ":Copilot auth",
+	-- 	-- opts = {
+	-- 	-- 	auto_trigger = true,
+	-- 	-- 	suggestion = { enabled = false },
+	-- 	-- 	panel = { enabled = false },
+	-- 	-- 	filetypes = {
+	-- 	-- 		markdown = true,
+	-- 	-- 		help = true,
+	-- 	-- 		gitcommit = false,
+	-- 	-- 	},
+	-- 	-- },
+	-- 	config = function()
+	-- 		require("copilot").setup({
+	-- 			suggestions = {
+	-- 				enabled = true,
+	-- 				auto_refresh = true,
+	-- 				keymap = {
+	-- 					jump_prev = "[[",
+	-- 					jump_next = "]]",
+	-- 					accept = "<CR>",
+	-- 					-- refresh = "gr",
+	-- 					open = "<M-CR>",
+	-- 				},
+	-- 				layout = {
+	-- 					position = "bottom", -- | top | left | right
+	-- 					ratio = 0.4,
+	-- 				},
+	-- 			},
+	-- 			suggestion = {
+	-- 				enabled = true,
+	-- 				auto_trigger = false,
+	-- 				debounce = 75,
+	-- 				keymap = {
+	-- 					accept = "<M-l>",
+	-- 					accept_word = false,
+	-- 					accept_line = false,
+	-- 					next = "<M-]>",
+	-- 					prev = "<M-[>",
+	-- 					dismiss = "<C-]>",
+	-- 				},
+	-- 			},
+	-- 			filetypes = {
+	-- 				yaml = false,
+	-- 				markdown = false,
+	-- 				help = false,
+	-- 				gitcommit = false,
+	-- 				gitrebase = false,
+	-- 				hgcommit = false,
+	-- 				svn = false,
+	-- 				cvs = false,
+	-- 				["."] = false,
+	-- 			},
+	-- 			copilot_node_command = "node", -- Node.js version must be > 18.x
+	-- 			server_opts_overrides = {},
+	-- 		})
+	-- 	end,
+	-- },
 
 	{
 		"rmagatti/auto-session",
@@ -303,7 +365,7 @@ require("lazy").setup({
 })
 
 vim.keymap.set("n", "<leader>hc", "<Plug>RestNvim", { desc = "[H]ttp [c]ursor" })
-vim.keymap.set("n", "<leader>lg", "<cmd>lua require('logsitter').log()<cr>", { desc = "[L]o[g]" })
+vim.keymap.set("n", "<leader>cl", "<cmd>lua require('logsitter').log()<cr>", { desc = "[L]o[g]" })
 -- vim.api.nvim_create_augroup("LogSitter", { clear = true })
 -- vim.api.nvim_create_autocmd("FileType", {
 -- 	group = "Logsitter",
@@ -314,8 +376,16 @@ vim.keymap.set("n", "<leader>lg", "<cmd>lua require('logsitter').log()<cr>", { d
 -- 		end)
 -- 	end,
 -- })
+--
+--
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = { "*.tsx", "*.ts", "*.jsx", "*.js" },
+	command = "silent! EslintFixAll",
+	group = vim.api.nvim_create_augroup("MyAutocmdsJavaScripFormatting", {}),
+})
 
 vim.cmd([[colorscheme catppuccin]]) -- colorscheme
+-- vim.cmd([[colorscheme dracula]]) -- colorscheme
 
 -- [[ Telescope KEYBINDS ]]
 -- See `:help telescope.builtin`
@@ -468,7 +538,31 @@ require("telescope").setup({
 			},
 		},
 	},
+	extensions = {
+		["ui-select"] = {
+			require("telescope.themes").get_dropdown({
+				-- even more opts
+			}),
+
+			-- pseudo code / specification for writing custom displays, like the one
+			-- for "codeactions"
+			-- specific_opts = {
+			--   [kind] = {
+			--     make_indexed = function(items) -> indexed_items, width,
+			--     make_displayer = function(widths) -> displayer
+			--     make_display = function(displayer) -> function(e)
+			--     make_ordinal = function(e) -> string
+			--   },
+			--   -- for example to disable the custom builtin "codeactions" display
+			--      do the following
+			--   codeactions = false,
+			-- }
+		},
+	},
 })
+-- To get ui-select loaded and working with telescope, you need to call
+-- load_extension, somewhere after setup function:
+require("telescope").load_extension("ui-select")
 
 require("fine-cmdline").setup({
 	cmdline = {

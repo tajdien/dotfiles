@@ -15,7 +15,7 @@ opt.softtabstop = 2
 opt.termguicolors = true -- TODO: was das
 opt.cursorline = true -- Shows cursor in line
 
-opt.scrolloff = 12 -- Keep lines between cursor
+opt.scrolloff = 20 -- Keep lines between cursor
 
 opt.relativenumber = true -- Relative line numbers
 opt.number = true -- Show line numbers

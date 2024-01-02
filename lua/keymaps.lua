@@ -53,6 +53,25 @@ map("n", "[b", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
 map("n", "]b", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
 
 map("n", "<leader>bo", "<Cmd>BufferLineCloseOthers<CR>", { desc = "Delete other buffers" })
+-- require("telescope.builtin").lsp_references
+
+-- Toggleterm
+-- TODO: this does not work good
+map("n", "<leader>tl", ":ToggleTerm size=40 direction=vertical name=desktop<CR>", { desc = "Toggle terminal" })
+-- :ToggleTerm size=40 dir=~/Desktop direction=horizontal name=desktop
+
+-- Runs the current curl under the cursor
+map("n", "<leader>hc", "<Plug>RestNvim", { desc = "[H]ttp [c]ursor" })
+
+-- Turbolog like .cl in webstorm
+map("n", "<leader>cl", "<cmd>lua require('logsitter').log()<cr>", { desc = "[L]o[g]" })
+
+-- Scroll up and down
+map("n", "<ScrollWheelUp>", "<C-y>", { noremap = true })
+map("n", "<ScrollWheelDown>", "<C-e>", { noremap = true })
+
+-- jest
+-- map("n", "<leader>jf", require("jester").run_file, { desc = "Jest: Run [F]ile" })
 
 -- 	{ "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
 -- 	{ "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },

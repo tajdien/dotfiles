@@ -66,9 +66,50 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"https://github.com/lewis6991/gitsigns.nvim",
+		"lewis6991/gitsigns.nvim",
 		config = function()
-			require("gitsigns").setup()
+			require("gitsigns").setup({
+				signs = {
+					add = { text = "│" },
+					change = { text = "│" },
+					delete = { text = "_" },
+					topdelete = { text = "‾" },
+					changedelete = { text = "~" },
+					untracked = { text = "┆" },
+				},
+				signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
+				numhl = false, -- Toggle with `:Gitsigns toggle_numhl`
+				linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
+				word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
+				watch_gitdir = {
+					follow_files = true,
+				},
+				attach_to_untracked = true,
+				current_line_blame = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
+				current_line_blame_opts = {
+					virt_text = true,
+					virt_text_pos = "eol", -- 'eol' | 'overlay' | 'right_align'
+					delay = 1000,
+					ignore_whitespace = false,
+					virt_text_priority = 100,
+				},
+				current_line_blame_formatter = "<author>, <author_time:%Y-%m-%d> - <summary>",
+				sign_priority = 6,
+				update_debounce = 100,
+				status_formatter = nil, -- Use default
+				max_file_length = 40000, -- Disable if file is longer than this (in lines)
+				preview_config = {
+					-- Options passed to nvim_open_win
+					border = "single",
+					style = "minimal",
+					relative = "cursor",
+					row = 0,
+					col = 1,
+				},
+				yadm = {
+					enable = false,
+				},
+			})
 		end,
 	},
 	{ "nvim-telescope/telescope-ui-select.nvim" },
@@ -133,6 +174,14 @@ require("lazy").setup({
 	-- 		})
 	-- 	end,
 	-- },
+	{
+		"f-person/git-blame.nvim",
+		config = function()
+			require("gitblame").setup({
+				enabled = false,
+			})
+		end,
+	},
 
 	{
 		"rmagatti/auto-session",
@@ -168,14 +217,11 @@ require("lazy").setup({
 		config = function()
 			require("rest-nvim").setup({
 				result_split_in_place = true,
-				-- stay in current windows (.http file) or change to results window (default)
-				stay_in_current_window_after_split = true,
-				-- Encode URL before making request
-				encode_url = true,
-				-- Highlight request on run
+				stay_in_current_window_after_split = false, -- stay in current windows (.http file) or change to results window (default)
+				encode_url = true, -- Encode URL before making request
 				highlight = {
 					enabled = true,
-					timeout = 150,
+					timeout = 350,
 				},
 				result = {
 					-- toggle showing URL, HTTP info, headers at top the of result window
@@ -196,12 +242,15 @@ require("lazy").setup({
 			})
 		end,
 	},
+	-- jest
 	{
 		"David-Kunz/jester",
 		config = function()
 			require("jester").setup({})
 		end,
-	}, -- jest
+	},
+
+	-- Turbo log
 	{ "https://github.com/gaelph/logsitter.nvim" },
 
 	-- TODO: broken: try to fix
@@ -250,6 +299,26 @@ require("lazy").setup({
 		},
 	},
 
+	--   lualine_a = {
+	--     {
+	--       'filename',
+	--       file_status = true,      -- Displays file status (readonly status, modified status)
+	--       newfile_status = false,  -- Display new file status (new file means no write after created)
+	--       path = 0,                -- 0: Just the filename
+	--                                -- 1: Relative path
+	--                                -- 2: Absolute path
+	--                                -- 3: Absolute path, with tilde as the home directory
+	--                                -- 4: Filename and parent dir, with tilde as the home directory
+	--
+	--       shorting_target = 40,    -- Shortens path to leave 40 spaces in the window
+	--                                -- for other components. (terrible name, any suggestions?)
+	--       symbols = {
+	--         modified = '[+]',      -- Text to show when the file is modified.
+	--         readonly = '[-]',      -- Text to show when the file is non-modifiable or readonly.
+	--         unnamed = '[No Name]', -- Text to show for unnamed buffers.
+	--         newfile = '[New]',     -- Text to show for newly created file before first write
+	--       }
+	--     }
 	{
 		-- Statusbar at the bottom
 		"nvim-lualine/lualine.nvim",
@@ -261,6 +330,14 @@ require("lazy").setup({
 				theme = "catppuccin",
 				component_separators = "|",
 				section_separators = "",
+			},
+			section = {
+				lualine_c = {
+					{
+						"filename",
+						path = 1,
+					},
+				},
 			},
 		},
 	},
@@ -364,8 +441,6 @@ require("lazy").setup({
 	},
 })
 
-vim.keymap.set("n", "<leader>hc", "<Plug>RestNvim", { desc = "[H]ttp [c]ursor" })
-vim.keymap.set("n", "<leader>cl", "<cmd>lua require('logsitter').log()<cr>", { desc = "[L]o[g]" })
 -- vim.api.nvim_create_augroup("LogSitter", { clear = true })
 -- vim.api.nvim_create_autocmd("FileType", {
 -- 	group = "Logsitter",
@@ -410,6 +485,7 @@ vim.keymap.set("n", "<C-S>o", require("telescope.builtin").find_files, { desc = 
 vim.keymap.set("n", "<leader>sh", require("telescope.builtin").help_tags, { desc = "[S]earch [H]elp" })
 vim.keymap.set("n", "<leader>sw", require("telescope.builtin").grep_string, { desc = "[S]earch current [W]ord" })
 vim.keymap.set("n", "<leader>sg", require("telescope.builtin").live_grep, { desc = "[S]earch by [G]rep" })
+vim.keymap.set("n", "<leader>fg", require("telescope.builtin").live_grep, { desc = "[S]earch by [G]rep" })
 vim.keymap.set("n", "<leader>sp", require("telescope.builtin").diagnostics, { desc = "[S]earch [D]iagnostics" })
 vim.keymap.set("n", "<leader>sr", require("telescope.builtin").resume, { desc = "[S]earch [R]esume" })
 

@@ -15,10 +15,12 @@ opt.softtabstop = 2
 opt.termguicolors = true -- TODO: was das
 opt.cursorline = true -- Shows cursor in line
 
-opt.scrolloff = 20 -- Keep lines between cursor
+opt.scrolloff = 10 -- Keep lines between cursor
 
 opt.relativenumber = true -- Relative line numbers
 opt.number = true -- Show line numbers
+
+opt.mousescroll = "ver:1,hor:6" -- Mouse scroll options
 
 opt.hlsearch = false -- Set highlight on search
 opt.mouse = "a" -- Enable mouse mode

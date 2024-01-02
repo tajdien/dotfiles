@@ -20,6 +20,7 @@ opt.scrolloff = 10 -- Keep lines between cursor
 opt.relativenumber = true -- Relative line numbers
 opt.number = true -- Show line numbers
 
+-- todo: does not work as i want and i need the smooth scrolling
 opt.mousescroll = "ver:1,hor:6" -- Mouse scroll options
 
 opt.hlsearch = false -- Set highlight on search

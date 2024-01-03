@@ -72,6 +72,9 @@ map("n", "<ScrollWheelDown>", "<C-e>", { noremap = true })
 
 -- jest
 -- map("n", "<leader>jf", require("jester").run_file, { desc = "Jest: Run [F]ile" })
+--
+-- GitBlame
+map("n", "<leader>gb", "<cmd>GitBlameToggle<cr>", { desc = "Toggle [G]it [B]lame" })
 
 -- 	{ "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
 -- 	{ "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },

@@ -43,7 +43,7 @@ require("lazy").setup({
 	-- { "lukas-reineke/indent-blankline.nvim", main = "ibl" }, -- Intention lines
 	{ "stevearc/conform.nvim" }, -- formatter
 	{ "justinmk/vim-sneak" }, -- Sneak with S
-	{ "tpope/vim-repeat" }, -- Enables repeating of commands from plugins with .
+	{ "tpope/vim-repeat" }, -- Enables repeating of commands from plugins with . TODO
 	{ "VonHeikemen/fine-cmdline.nvim", dependencies = { { "MunifTanjim/nui.nvim" } } }, -- floating cmd line
 	{ "tzachar/highlight-undo.nvim" }, -- Highlights the last undo and redo
 	{ "echwsnovski/mini.nvim" }, -- Auto close and open pairs like {[ ...
@@ -53,18 +53,21 @@ require("lazy").setup({
 			require("local-highlight").setup()
 		end,
 	},
+	-- Comment shortcut
 	{
 		"numToStr/Comment.nvim",
 		config = function()
 			require("Comment").setup({})
 		end,
 	},
+	-- Smooth scrolling
 	{
 		"karb94/neoscroll.nvim",
 		config = function()
 			require("neoscroll").setup({})
 		end,
 	},
+	-- Git signs on the left side
 	{
 		"lewis6991/gitsigns.nvim",
 		config = function()
@@ -112,6 +115,7 @@ require("lazy").setup({
 			})
 		end,
 	},
+	-- telescope for code-actions and more -- todo
 	{ "nvim-telescope/telescope-ui-select.nvim" },
 	-- todo
 	-- {

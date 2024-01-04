@@ -20,8 +20,8 @@ map("n", "<leader>P", vim.diagnostic.goto_prev, { desc = "Previous [P]roblem" })
 -- Floating cmd line
 map("n", ":", "<cmd>FineCmdline<CR>", { noremap = true })
 
-map("n", "<A-p>", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
--- map("n", "<A-p>", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
+-- map("n", "<A-p>", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
+map("n", "<A-p>", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 
 -- Remap for dealing with word wrap
 map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -33,6 +33,12 @@ map("n", "<A-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
 map("n", "<A-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
 map("n", "<A-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
 
+-- Move between windows using option + hjkl
+map("n", "<A-h>", "<C-w>h", { desc = "Move to left window" })
+map("n", "<A-k>", "<C-w>k", { desc = "Move to top window" })
+map("n", "<A-j>", "<C-w>j", { desc = "Move to bottom window" })
+map("n", "<A-l>", "<C-w>l", { desc = "Move to right window" })
+
 -- [[ Bufferline ]]
 map("n", "<S-l>", "<cmd>BufferNext<cr>", { desc = "Next buffer" })
 map("n", "<S-x>", "<cmd>BufferNext<cr>", { desc = "Next buffer" })
@@ -42,7 +48,6 @@ map("n", "<A-w>", "<cmd>BufferClose<cr>", { desc = "Close buffer" })
 map("n", "<A-s-w>", "<cmd>BufferRestore<cr>", { desc = "Restore Buffer" })
 map("n", "<C-p>", "<Cmd>BufferPick<CR>", { desc = "Pick buffer" })
 map("n", "<leader>bo", "<Cmd>BufferCloseAllButCurrent<CR>", { desc = "Close all buffers but current" })
-
 -- nnoremap <silent>    <A-1> <Cmd>BufferGoto 1<CR>
 -- nnoremap <silent>    <A-2> <Cmd>BufferGoto 2<CR>
 -- nnoremap <silent>    <A-3> <Cmd>BufferGoto 3<CR>

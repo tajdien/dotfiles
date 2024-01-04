@@ -431,8 +431,6 @@ require("lazy").setup({
 		end,
 	},
 
-	-- { "https://github.com/nvim-tree/nvim-tree.lua", dependencies = { "kyazdani42/nvim-web-devicons" } },
-
 	-- highlights unique characters when navigating with fFtT
 	{
 		"jinh0/eyeliner.nvim",
@@ -485,7 +483,6 @@ vim.keymap.set(
 
 vim.keymap.set("n", "<leader>sf", require("telescope.builtin").find_files, { desc = "[S]earch [F]iles" })
 vim.keymap.set("n", "<leader>ss", require("telescope.builtin").symbols, { desc = "[S]earch [F]iles" })
-vim.keymap.set("n", "<C-S>o", require("telescope.builtin").find_files, { desc = "[S]earch [F]iles" })
 vim.keymap.set("n", "<leader>sh", require("telescope.builtin").help_tags, { desc = "[S]earch [H]elp" })
 vim.keymap.set("n", "<leader>sw", require("telescope.builtin").grep_string, { desc = "[S]earch current [W]ord" })
 vim.keymap.set("n", "<leader>sg", require("telescope.builtin").live_grep, { desc = "[S]earch by [G]rep" })
@@ -569,14 +566,17 @@ require("neo-tree").setup({
 				-- 	desc = "print name",
 				-- 	nowait = true,
 				-- },
-				["o"] = {
-					command = "open",
-					nowait = true,
-				},
-				["O"] = {
-					"open",
-					nowait = true,
-				},
+				["o"] = { command = "open", nowait = true },
+				["O"] = { command = "open", nowait = true },
+
+				["<leader>oc"] = { command = "order_by_created", nowait = true },
+				["<leader>od"] = { command = "order_by_diagnostics", nowait = true },
+				["<leader>og"] = { command = "order_by_git_status", nowait = true },
+				["<leader>om"] = { command = "order_by_modified", nowait = true },
+				["<leader>on"] = { command = "order_by_name", nowait = true },
+				["<leader>os"] = { command = "order_by_size", nowait = true },
+				["<leader>ot"] = { command = "order_by_type", nowait = true },
+				-- add leader prefix to orderings to "o" executes immediately
 			},
 		},
 	},

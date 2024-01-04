@@ -4,14 +4,14 @@ local map = vim.keymap.set
 map("n", "<leader>w", ":w<CR>", { noremap = true, silent = true, desc = "Save the file" })
 
 -- Just to beginning and end of lines easier. From http://vimbits.com/bits/16
-map({ "n", "x" }, "H", "^", { desc = "Beginning of line" })
-map({ "n", "x" }, "L", "$", { desc = "End of line" })
+map("x", "H", "^", { desc = "Beginning of line" })
+map("x", "L", "$", { desc = "End of line" })
 
--- Redo
-map("n", "U", "<C-r>", { desc = "Redo" })
+map("n", "U", "<C-r>", { desc = "Redo" }) -- Redo
 
 -- Git
 map("n", "<leader>gm", "<CMD>Neogit<CR>", { desc = "[G]it [M]enu" })
+map("n", "<leader>gb", "<cmd>GitBlameToggle<cr>", { desc = "Toggle [G]it [B]lame" })
 
 -- Diagnostic ("Problems" from IDE) keymaps
 map("n", "<leader>p", vim.diagnostic.goto_next, { desc = "Next [P]roblem" })
@@ -20,17 +20,12 @@ map("n", "<leader>P", vim.diagnostic.goto_prev, { desc = "Previous [P]roblem" })
 -- Floating cmd line
 map("n", ":", "<cmd>FineCmdline<CR>", { noremap = true })
 
--- TODO: this sounds cool but i need proper keybinds for it
 map("n", "<A-p>", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
-map("n", "<A-p>", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
+-- map("n", "<A-p>", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 
 -- Remap for dealing with word wrap
 map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
-
--- Jump to previous/next position with []
--- map("n", "<D-[>", "<C-o>", { silent = true, desc = "Jump to previous position" })
--- map("n", "<D-]", "<C-i>", { silent = true, desc = "Jump to next position" })
 
 -- Resize windows using option + arrow keys
 map("n", "<A-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
@@ -70,6 +65,3 @@ map("n", "<ScrollWheelDown>", "<C-e>", { noremap = true })
 
 -- jest
 -- map("n", "<leader>jf", require("jester").run_file, { desc = "Jest: Run [F]ile" })
---
--- GitBlame
-map("n", "<leader>gb", "<cmd>GitBlameToggle<cr>", { desc = "Toggle [G]it [B]lame" })

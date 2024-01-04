@@ -228,10 +228,7 @@ require("lazy").setup({
 					timeout = 350,
 				},
 				result = {
-					-- toggle showing URL, HTTP info, headers at top the of result window
 					show_url = true,
-					-- show the generated curl command in case you want to launch
-					-- the same request via the terminal (can be verbose)
 					show_curl_command = false,
 					show_http_info = true,
 					show_headers = true,
@@ -303,26 +300,6 @@ require("lazy").setup({
 		},
 	},
 
-	--   lualine_a = {
-	--     {
-	--       'filename',
-	--       file_status = true,      -- Displays file status (readonly status, modified status)
-	--       newfile_status = false,  -- Display new file status (new file means no write after created)
-	--       path = 0,                -- 0: Just the filename
-	--                                -- 1: Relative path
-	--                                -- 2: Absolute path
-	--                                -- 3: Absolute path, with tilde as the home directory
-	--                                -- 4: Filename and parent dir, with tilde as the home directory
-	--
-	--       shorting_target = 40,    -- Shortens path to leave 40 spaces in the window
-	--                                -- for other components. (terrible name, any suggestions?)
-	--       symbols = {
-	--         modified = '[+]',      -- Text to show when the file is modified.
-	--         readonly = '[-]',      -- Text to show when the file is non-modifiable or readonly.
-	--         unnamed = '[No Name]', -- Text to show for unnamed buffers.
-	--         newfile = '[New]',     -- Text to show for newly created file before first write
-	--       }
-	--     }
 	{
 		-- Statusbar at the bottom
 		"nvim-lualine/lualine.nvim",
@@ -353,24 +330,23 @@ require("lazy").setup({
 		build = ":TSUpdate",
 	},
 
-	-- tabs as tabs ??
 	{
-		"akinsho/bufferline.nvim",
-		config = function()
-			require("bufferline").setup({
-				options = {
-					diagnostics = "nvim_lsp",
-					offsets = {
-						{
-							filetype = "neo-tree",
-							text = "Neotree",
-							separator = true,
-							text_align = "left",
-						},
-					},
-				},
-			})
+		"romgrk/barbar.nvim",
+		dependencies = {
+			"lewis6991/gitsigns.nvim", -- OPTIONAL: for git status
+			"nvim-tree/nvim-web-devicons", -- OPTIONAL: for file icons
+		},
+		init = function()
+			vim.g.barbar_auto_setup = true
 		end,
+		opts = {
+			sidebar_filetypes = {
+				["neo-tree"] = { event = "BufWipeout", text = "Neotree" },
+			},
+			icons = {
+				button = false,
+			},
+		},
 	},
 
 	{
@@ -569,6 +545,7 @@ require("neo-tree").setup({
 				["o"] = { command = "open", nowait = true },
 				["O"] = { command = "open", nowait = true },
 
+				-- add leader prefix to orderings to "o" executes immediately
 				["<leader>oc"] = { command = "order_by_created", nowait = true },
 				["<leader>od"] = { command = "order_by_diagnostics", nowait = true },
 				["<leader>og"] = { command = "order_by_git_status", nowait = true },
@@ -576,7 +553,14 @@ require("neo-tree").setup({
 				["<leader>on"] = { command = "order_by_name", nowait = true },
 				["<leader>os"] = { command = "order_by_size", nowait = true },
 				["<leader>ot"] = { command = "order_by_type", nowait = true },
-				-- add leader prefix to orderings to "o" executes immediately
+				-- and remove all  default mappings
+				["oc"] = "noop",
+				["od"] = "noop",
+				["og"] = "noop",
+				["om"] = "noop",
+				["on"] = "noop",
+				["os"] = "noop",
+				["ot"] = "noop",
 			},
 		},
 	},

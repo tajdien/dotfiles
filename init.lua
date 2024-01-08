@@ -2,10 +2,7 @@ local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 local uv = vim.uv or vim.loop
 
 -- todo
--- 1. alwatys open Neotree
--- 3. telescope search
--- only move certain lines when scrolling wiht mousewheel
--- clean up file
+-- 1. alwatys open Neotree 3. telescope search only move certain lines when scrolling wiht mousewheel clean up file
 -- move plugins to plugin folder
 -- Make copy pasta work in kitty
 
@@ -481,11 +478,6 @@ vim.keymap.set("n", "<leader>sr", require("telescope.builtin").resume, { desc = 
 -- :lua require"jester".run_last()
 -- ```
 
---
-
--- Restore last session
--- vim.api.nvim_set_keymap("n", "<leader>qs", [[<cmd>lua require("persistence").load()<cr>]], {})
-
 -- [[ Basic Keymaps ]]
 
 vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
@@ -518,7 +510,6 @@ require("conform").setup({
 -- https://github.com/nvim-neo-tree/neo-tree.nvim
 require("neo-tree").setup({
 	close_if_last_window = true,
-
 	filesystem = {
 		window = {
 			mapping_options = {
@@ -526,41 +517,23 @@ require("neo-tree").setup({
 				nowait = false,
 			},
 			mappings = {
-				-- ["?"] = {
-				-- 	function(state)
-				-- 		local node = state.tree:get_node()
-				-- 		print(node.name)
-				-- 	end,
-				-- 	desc = "print name",
-				-- 	nowait = true,
-				-- },
-				-- ["i"] = {
-				-- 	command = function(state)
-				-- 		local node = state.tree:get_node()
-				-- 		print(node.name)
-				-- 	end,
-				-- 	desc = "print name",
-				-- 	nowait = true,
-				-- },
 				["o"] = { command = "open", nowait = true },
 				["O"] = { command = "open", nowait = true },
-
-				-- add leader prefix to orderings to "o" executes immediately
-				["<leader>oc"] = { command = "order_by_created", nowait = true },
-				["<leader>od"] = { command = "order_by_diagnostics", nowait = true },
-				["<leader>og"] = { command = "order_by_git_status", nowait = true },
-				["<leader>om"] = { command = "order_by_modified", nowait = true },
-				["<leader>on"] = { command = "order_by_name", nowait = true },
-				["<leader>os"] = { command = "order_by_size", nowait = true },
-				["<leader>ot"] = { command = "order_by_type", nowait = true },
-				-- and remove all  default mappings
+				-- Change 'o' bindings to have leader
 				["oc"] = "noop",
+				["<leader>oc"] = { command = "order_by_created", nowait = true },
 				["od"] = "noop",
+				["<leader>od"] = { command = "order_by_diagnostics", nowait = true },
 				["og"] = "noop",
+				["<leader>og"] = { command = "order_by_git_status", nowait = true },
 				["om"] = "noop",
+				["<leader>om"] = { command = "order_by_modified", nowait = true },
 				["on"] = "noop",
+				["<leader>on"] = { command = "order_by_name", nowait = true },
 				["os"] = "noop",
+				["<leader>os"] = { command = "order_by_size", nowait = true },
 				["ot"] = "noop",
+				["<leader>ot"] = { command = "order_by_type", nowait = true },
 			},
 		},
 	},
@@ -569,12 +542,13 @@ require("neo-tree").setup({
 })
 
 vim.keymap.set("n", "<leader>e", "<cmd>Neotree left reveal_force_cwd<cr>", { desc = "Shows Neotree in current file" })
-vim.keymap.set("n", "<leader>E", "<cmd>Neotree toggle", { desc = "Toggles Neotree" })
+vim.keymap.set("n", "<leader>E", "<cmd>Neotree toggle<cr>", { desc = "Toggles Neotree" })
+--vim.keymap.set("n", "<leader>nt", "<cmd>Neotree toggle", { desc = "Toggles Neotree" })
 
 -- [[ mini.pairs ]]
 -- https://github.com/echasnovski/mini.pairs
+-- TODO: Ignore auto completion if cursor follows a word
 require("mini.pairs").setup({
-	-- todo
 	-- mappings = {
 	--   ['('] = { action = 'open', pair = '()', neigh_pattern = '[^\\].' },
 	--   ['['] = { action = 'open', pair = '[]', neigh_pattern = '[^\\].' },
@@ -624,8 +598,7 @@ require("telescope").setup({
 	},
 })
 
--- To get ui-select loaded and working with telescope, you need to call
--- load_extension, somewhere after setup function:
+-- To get ui-select loaded and working with telescope, you need to call load_extension, somewhere after setup function:
 require("telescope").load_extension("ui-select")
 
 require("fine-cmdline").setup({

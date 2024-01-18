@@ -11,6 +11,7 @@ map("n", "U", "<C-r>", { desc = "Redo" }) -- Redo
 
 -- Git
 map("n", "<leader>gm", "<CMD>Neogit<CR>", { desc = "[G]it [M]enu" })
+map("n", "gm", "<CMD>Neogit<CR>", { desc = "[G]it [M]enu" })
 map("n", "<leader>gb", "<cmd>GitBlameToggle<cr>", { desc = "Toggle [G]it [B]lame" })
 
 -- Diagnostic ("Problems" from IDE) keymaps
@@ -18,7 +19,7 @@ map("n", "<leader>p", vim.diagnostic.goto_next, { desc = "Next [P]roblem" })
 map("n", "<leader>P", vim.diagnostic.goto_prev, { desc = "Previous [P]roblem" })
 
 -- Floating cmd line
-map("n", ":", "<cmd>FineCmdline<CR>", { noremap = true })
+-- map("n", ":", "<cmd>FineCmdline<CR>", { noremap = true })
 
 -- map("n", "<A-p>", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
 map("n", "<A-p>", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
@@ -70,3 +71,7 @@ map("n", "<ScrollWheelDown>", "<C-e>", { noremap = true })
 
 -- jest
 -- map("n", "<leader>jf", require("jester").run_file, { desc = "Jest: Run [F]ile" })
+
+-- Scratchpad
+map("n", "<leader>sn", "<cmd>Scratch<cr>")
+map("n", "<leader>so", "<cmd>ScratchOpen<cr>")

@@ -5,6 +5,7 @@ local uv = vim.uv or vim.loop
 -- 1. alwatys open Neotree 3. telescope search only move certain lines when scrolling wiht mousewheel clean up file
 -- move plugins to plugin folder
 -- Make copy pasta work in kitty
+-- make noice nice and try to make it work as i expect
 
 -- Leader set to <Space>
 vim.g.mapleader = " "
@@ -31,9 +32,27 @@ vim.opt.rtp:prepend(lazypath)
 -- [[ Configure plugins ]]
 require("lazy").setup({
 	--	spec = { import = "plugins" },
-	-- theme
-	-- { "Mofiqul/dracula.nvim" },
+	-- THEMES
+	{ "Mofiqul/dracula.nvim" },
+	{ "folke/tokyonight.nvim", lazy = false, priority = 1000, opts = {} },
 	{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+
+	{
+		"LintaoAmons/scratch.nvim",
+		event = "VeryLazy",
+	},
+	{ "onsails/lspkind.nvim" },
+
+	{
+		"folke/noice.nvim",
+		event = "VeryLazy",
+		opts = {
+			-- add any options here
+		},
+		-- dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify" },
+		dependencies = { "MunifTanjim/nui.nvim" },
+	},
+
 	{ "tpope/vim-sleuth" }, -- Detect tabstop and shiftwidth automatically
 	{ "github/copilot.vim" }, -- copilot
 	{ "folke/which-key.nvim", ots = {} }, -- show which keybinds are available
@@ -41,7 +60,7 @@ require("lazy").setup({
 	{ "stevearc/conform.nvim" }, -- formatter
 	{ "justinmk/vim-sneak" }, -- Sneak with S
 	{ "tpope/vim-repeat" }, -- Enables repeating of commands from plugins with . TODO
-	{ "VonHeikemen/fine-cmdline.nvim", dependencies = { { "MunifTanjim/nui.nvim" } } }, -- floating cmd line
+	-- { "VonHeikemen/fine-cmdline.nvim", dependencies = { { "MunifTanjim/nui.nvim" } } }, -- floating cmd line
 	{ "tzachar/highlight-undo.nvim" }, -- Highlights the last undo and redo
 	{ "echwsnovski/mini.nvim" }, -- Auto close and open pairs like {[ ...
 	{
@@ -218,7 +237,7 @@ require("lazy").setup({
 		config = function()
 			require("rest-nvim").setup({
 				result_split_in_place = true,
-				stay_in_current_window_after_split = false, -- stay in current windows (.http file) or change to results window (default)
+				stay_in_current_window_after_split = true, -- stay in current windows (.http file) or change to results window (default)
 				encode_url = true, -- Encode URL before making request
 				highlight = {
 					enabled = true,
@@ -231,7 +250,7 @@ require("lazy").setup({
 					show_headers = true,
 					show_statistics = false,
 					formatters = {
-						json = "jq",
+						json = "jq", -- auto format json responses with jq
 						html = function(body)
 							return vim.fn.system({ "tidy", "-i", "-q", "-" }, body)
 						end,
@@ -297,17 +316,19 @@ require("lazy").setup({
 		},
 	},
 
+	-- Statusbar at the bottom
 	{
-		-- Statusbar at the bottom
 		"nvim-lualine/lualine.nvim",
+		event = "VeryLazy",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		-- See `:help lualine.txt`
 		opts = {
 			options = {
+				theme = "auto",
+				globalstatus = true,
 				icons_enabled = true,
-				theme = "catppuccin",
-				component_separators = "|",
-				section_separators = "",
+				component_separators = { left = "", right = "" },
+				section_separators = { left = "", right = "" },
 			},
 			section = {
 				lualine_c = {
@@ -434,7 +455,8 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 	group = vim.api.nvim_create_augroup("MyAutocmdsJavaScripFormatting", {}),
 })
 
-vim.cmd([[colorscheme catppuccin]]) -- colorscheme
+-- vim.cmd([[colorscheme tokyonight-night]]) -- colorscheme
+vim.cmd([[colorscheme dracula]]) -- colorscheme
 
 -- [[ Telescope KEYBINDS ]]
 -- See `:help telescope.builtin`
@@ -604,29 +626,29 @@ require("telescope").setup({
 -- To get ui-select loaded and working with telescope, you need to call load_extension, somewhere after setup function:
 require("telescope").load_extension("ui-select")
 
-require("fine-cmdline").setup({
-	cmdline = {
-		enable_keymaps = true,
-		smart_history = true,
-		prompt = ": ",
-	},
-	popup = {
-		position = {
-			row = "30%",
-			col = "50%",
-		},
-		size = {
-			width = "60%",
-		},
-		border = {
-			style = "rounded",
-		},
-		win_options = {
-			winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
-		},
-	},
-})
-
+-- require("fine-cmdline").setup({
+-- 	cmdline = {
+-- 		enable_keymaps = true,
+-- 		smart_history = true,
+-- 		prompt = ": ",
+-- 	},
+-- 	popup = {
+-- 		position = {
+-- 			row = "30%",
+-- 			col = "50%",
+-- 		},
+-- 		size = {
+-- 			width = "60%",
+-- 		},
+-- 		border = {
+-- 			style = "rounded",
+-- 		},
+-- 		win_options = {
+-- 			winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
+-- 		},
+-- 	},
+-- })
+--
 -- Enable telescope fzf native, if installed
 pcall(require("telescope").load_extension, "fzf")
 
@@ -751,7 +773,6 @@ vim.defer_fn(function()
 	})
 end, 0)
 
--- [[ configure ]]
 require("highlight-undo").setup({
 	duration = 500,
 	undo = {
@@ -906,6 +927,7 @@ local cmp = require("cmp")
 local luasnip = require("luasnip")
 require("luasnip.loaders.from_vscode").lazy_load()
 luasnip.config.setup({})
+local lspkind = require("lspkind")
 
 cmp.setup({
 	snippet = {
@@ -914,8 +936,34 @@ cmp.setup({
 		end,
 	},
 	completion = {
-		completeopt = "menu,menuone,noinsert",
+		completeopt = "menu,menuone",
 	},
+	window = {
+		completion = {
+			border = "rounded",
+			winhighlight = "Normal:Pmenu,CursorLine:CmpCursorLine,Search:None",
+			col_offset = -3,
+			side_padding = 1,
+			scrollbar = false,
+		},
+		documentation = {
+			border = "solid",
+			winhighlight = "Normal:CmpDoc,FloatBorder:CmpDoc,Search:None",
+			max_width = 80,
+			max_height = 12,
+		},
+	},
+	formatting = {
+		format = lspkind.cmp_format({
+			mode = "symbol", -- show only symbol annotations
+			maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+			-- can also be a function to dynamically calculate max width such as
+			-- maxwidth = function() return math.floor(0.45 * vim.o.columns) end,
+			ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+			show_labelDetails = true, -- show labelDetails in menu. Disabled by default
+		}),
+	},
+
 	mapping = cmp.mapping.preset.insert({
 		["<C-n>"] = cmp.mapping.select_next_item(),
 		["<C-p>"] = cmp.mapping.select_prev_item(),
@@ -951,6 +999,15 @@ cmp.setup({
 		{ name = "nvim_lsp" },
 		{ name = "luasnip" },
 	},
+})
+
+cmp.setup.cmdline(":", {
+	mapping = cmp.mapping.preset.cmdline(),
+	sources = cmp.config.sources({
+		{ name = "path" },
+	}, {
+		{ name = "cmdline" },
+	}),
 })
 
 -- The line beneath this is called `modeline`. See `:help modeline`

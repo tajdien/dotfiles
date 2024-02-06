@@ -33,9 +33,9 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	--	spec = { import = "plugins" },
 	-- THEMES
-	{ "Mofiqul/dracula.nvim" },
-	{ "folke/tokyonight.nvim", lazy = false, priority = 1000, opts = {} },
-	{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+	{ "Mofiqul/dracula.nvim", lazy = false, priority = 1000, opts = {} },
+	-- { "folke/tokyonight.nvim", lazy = false, priority = 1000, opts = {} },
+	-- { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
 
 	{
 		"LintaoAmons/scratch.nvim",
@@ -56,12 +56,12 @@ require("lazy").setup({
 	{ "tpope/vim-sleuth" }, -- Detect tabstop and shiftwidth automatically
 	{ "github/copilot.vim" }, -- copilot
 	{ "folke/which-key.nvim", ots = {} }, -- show which keybinds are available
-	-- { "lukas-reineke/indent-blankline.nvim", main = "ibl" }, -- Intention lines
 	{ "stevearc/conform.nvim" }, -- formatter
 	{ "justinmk/vim-sneak" }, -- Sneak with S
 	{ "tpope/vim-repeat" }, -- Enables repeating of commands from plugins with . TODO
-	-- { "VonHeikemen/fine-cmdline.nvim", dependencies = { { "MunifTanjim/nui.nvim" } } }, -- floating cmd line
+
 	{ "tzachar/highlight-undo.nvim" }, -- Highlights the last undo and redo
+
 	{ "echwsnovski/mini.nvim" }, -- Auto close and open pairs like {[ ...
 	{
 		"tzachar/local-highlight.nvim",
@@ -133,6 +133,7 @@ require("lazy").setup({
 	},
 	-- telescope for code-actions and more -- todo
 	{ "nvim-telescope/telescope-ui-select.nvim" },
+
 	-- todo
 	-- {
 	-- 	"zbirenbaum/copilot.lua",
@@ -194,6 +195,7 @@ require("lazy").setup({
 	-- 		})
 	-- 	end,
 	-- },
+	--
 	{
 		"f-person/git-blame.nvim",
 		config = function()
@@ -204,13 +206,15 @@ require("lazy").setup({
 	},
 
 	{
-		"rmagatti/auto-session",
-		config = function()
-			require("auto-session").setup({
-				log_level = "error",
-				auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
-			})
-		end,
+		"folke/persistence.nvim",
+		event = "BufReadPre",
+		opts = { options = vim.opt.sessionoptions:get() },
+  -- stylua: ignore
+  keys = {
+    { "<leader>qs", function() require("persistence").load() end, desc = "Restore Session" },
+    { "<leader>ql", function() require("persistence").load({ last = true }) end, desc = "Restore Last Session" },
+    { "<leader>qd", function() require("persistence").stop() end, desc = "Don't Save Current Session" },
+  },
 	},
 
 	{
@@ -218,7 +222,6 @@ require("lazy").setup({
 		version = "*",
 		config = function()
 			require("toggleterm").setup({
-				-- size can be a number or function which is passed the current terminal
 				size = 20,
 				open_mapping = [[<C-t>]],
 				hide_numbers = true, -- hide the number column in toggleterm buffers
@@ -259,7 +262,8 @@ require("lazy").setup({
 			})
 		end,
 	},
-	-- jest
+
+	-- jest todo
 	{
 		"David-Kunz/jester",
 		config = function()
@@ -477,7 +481,7 @@ vim.keymap.set(
 )
 
 vim.keymap.set("n", "<leader>sf", require("telescope.builtin").find_files, { desc = "[S]earch [F]iles" })
-vim.keymap.set("n", "<leader>ss", require("telescope.builtin").symbols, { desc = "[S]earch [F]iles" })
+vim.keymap.set("n", "<leader>ss", require("telescope.builtin").symbols, { desc = "[S]earch [S]ymbols" })
 vim.keymap.set("n", "<leader>sh", require("telescope.builtin").help_tags, { desc = "[S]earch [H]elp" })
 vim.keymap.set("n", "<leader>sw", require("telescope.builtin").grep_string, { desc = "[S]earch current [W]ord" })
 vim.keymap.set("n", "<leader>sg", require("telescope.builtin").live_grep, { desc = "[S]earch by [G]rep" })
@@ -486,22 +490,7 @@ vim.keymap.set("n", "<leader>sp", require("telescope.builtin").diagnostics, { de
 
 -- Todo
 vim.keymap.set("n", "<leader>sr", require("telescope.builtin").resume, { desc = "[S]earch [R]esume" })
-vim.keymap.set("n", "<leader><space>", require("telescope.builtin").resume, { desc = "[S]earch [R]esume" })
-
--- :lua require"jester".run()
--- ```
---
--- ### Run current file
---
--- ```
--- :lua require"jester".run_file()
--- ```
---
--- ### Run last test(s)
---
--- ```
--- :lua require"jester".run_last()
--- ```
+-- vim.keymap.set("n", "<leader><space>", require("telescope.builtin").resume, { desc = "[S]earch [R]esume" })
 
 -- [[ Basic Keymaps ]]
 
@@ -818,7 +807,8 @@ local on_attach = function(_, bufnr)
 	nmap("<leader>re", vim.lsp.buf.rename, "[R]e[n]ame")
 	nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 
-	-- See `:help K` for why this keymap
+	-- TODO this looks very with dracula
+	-- see here https://github.com/jdhao/nvim-config/blob/master/lua/config/lsp.lua#L177-L179
 	nmap("K", vim.lsp.buf.hover, "Hover Documentation")
 	nmap("<C-k>", vim.lsp.buf.signature_help, "Signature Documentation")
 
@@ -936,22 +926,24 @@ cmp.setup({
 		end,
 	},
 	completion = {
-		completeopt = "menu,menuone",
+		completeopt = "menu,menuone,noinsert",
 	},
 	window = {
 		completion = {
 			border = "rounded",
-			winhighlight = "Normal:Pmenu,CursorLine:CmpCursorLine,Search:None",
-			col_offset = -3,
+			-- winhighlight = "Normal:Pmenu,CursorLine:CmpCursorLine,Search:None",
+			winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:CursorLineBG,Search:None",
+			-- col_offset = -3,
 			side_padding = 1,
 			scrollbar = false,
 		},
-		documentation = {
-			border = "solid",
-			winhighlight = "Normal:CmpDoc,FloatBorder:CmpDoc,Search:None",
-			max_width = 80,
-			max_height = 12,
-		},
+		-- documentation = {
+		-- 	border = "rounded",
+		-- 	-- winhighlight = "Normal:CmpDoc,FloatBorder:CmpDoc,Search:None",
+		-- 	-- max_width = 80,
+		-- 	-- max_height = 12,
+		-- },
+		documentation = cmp.config.window.bordered(),
 	},
 	formatting = {
 		format = lspkind.cmp_format({
@@ -959,11 +951,23 @@ cmp.setup({
 			maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
 			-- can also be a function to dynamically calculate max width such as
 			-- maxwidth = function() return math.floor(0.45 * vim.o.columns) end,
-			ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+			ellipsis_char = "..", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
 			show_labelDetails = true, -- show labelDetails in menu. Disabled by default
 		}),
 	},
-
+	sorting = { -- Very hard to find actual documentation on this
+		comparators = {
+			cmp.config.compare.offset,
+			cmp.config.compare.exact,
+			cmp.config.compare.recently_used,
+			cmp.config.compare.sort_text,
+			cmp.config.compare.score,
+			-- require("cmp-under-comparator").under,
+			cmp.config.compare.kind,
+			cmp.config.compare.length,
+			cmp.config.compare.order,
+		},
+	},
 	mapping = cmp.mapping.preset.insert({
 		["<C-n>"] = cmp.mapping.select_next_item(),
 		["<C-p>"] = cmp.mapping.select_prev_item(),

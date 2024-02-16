@@ -1,7 +1,7 @@
 {
   "window_cmd": "edit",
   "use_telescope": true,
-  "filetypes": ["xml", "go", "lua", "ts", "sh"],
+  "filetypes": ["xml", "go", "lua", "ts", "sh", "txt", "csv"],
   "localKeys": [
     {
       "filenameContains": ["gp"],
@@ -44,4 +44,3 @@
     "k8s.yaml": { "subdir": "learn-k8s" }
   }
 }
-

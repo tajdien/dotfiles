@@ -13,6 +13,7 @@ vim.g.maplocalleader = " "
 
 require("options")
 require("keymaps")
+require("scripts")
 
 -- Auto-install lazy.nvim if not present
 if not uv.fs_stat(lazypath) then

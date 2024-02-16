@@ -69,9 +69,23 @@ map("n", "<leader>cl", "<cmd>lua require('logsitter').log()<cr>", { desc = "[L]o
 map("n", "<ScrollWheelUp>", "<C-y>", { noremap = true })
 map("n", "<ScrollWheelDown>", "<C-e>", { noremap = true })
 
--- jest
--- map("n", "<leader>jf", require("jester").run_file, { desc = "Jest: Run [F]ile" })
-
 -- Scratchpad
 map("n", "<leader>sn", "<cmd>Scratch<cr>")
 map("n", "<leader>so", "<cmd>ScratchOpen<cr>")
+
+-- Run nearest test(s) under the cursor
+map("n", "<leader>jc", ':lua require"jester".run()<CR>', { desc = "[J]est run [C]ursor" })
+
+-- Run current file
+map("n", "<leader>jf", ':lua require"jester".run_file()<CR>', { desc = "[J]est run [F]ile" })
+
+-- Run last test(s)
+map("n", "<leader>jl", ':lua require"jester".run_last()<CR>', { desc = "[J]est run [L]ast" })
+
+-- TODO Install DAP
+-- Debug nearest test(s) under the cursor
+-- :lua require"jester".debug()
+-- Debug current file
+-- :lua require"jester".debug_file()
+-- Debug last test(s)
+-- :lua require"jester".debug_last()

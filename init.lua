@@ -63,7 +63,7 @@ require("lazy").setup({
 
 	{ "tzachar/highlight-undo.nvim" }, -- Highlights the last undo and redo
 
-	{ "echwsnovski/mini.nvim" }, -- Auto close and open pairs like {[ ...
+	-- { "echwsnovski/mini.nvim" }, -- Auto close and open pairs like {[ ...
 	{
 		"tzachar/local-highlight.nvim",
 		config = function()
@@ -371,33 +371,33 @@ require("lazy").setup({
 			},
 		},
 	},
-
-	{
-		opts = {
-			indent = {
-				char = "│",
-				tab_char = "│",
-			},
-			scope = { enabled = false },
-			exclude = {
-				filetypes = {
-					"help",
-					"alpha",
-					"dashboard",
-					"neo-tree",
-					"Trouble",
-					"trouble",
-					"lazy",
-					"mason",
-					"notify",
-					"toggleterm",
-					"lazyterm",
-				},
-			},
-		},
-		"lukas-reineke/indent-blankline.nvim",
-		main = "ibl",
-	},
+	--
+	-- {
+	-- 	opts = {
+	-- 		indent = {
+	-- 			char = "│",
+	-- 			tab_char = "│",
+	-- 		},
+	-- 		scope = { enabled = false },
+	-- 		exclude = {
+	-- 			filetypes = {
+	-- 				"help",
+	-- 				"alpha",
+	-- 				"dashboard",
+	-- 				"neo-tree",
+	-- 				"Trouble",
+	-- 				"trouble",
+	-- 				"lazy",
+	-- 				"mason",
+	-- 				"notify",
+	-- 				"toggleterm",
+	-- 				"lazyterm",
+	-- 			},
+	-- 		},
+	-- 	},
+	-- 	"lukas-reineke/indent-blankline.nvim",
+	-- 	main = "ibl",
+	-- },
 
 	-- Tree
 	{
@@ -563,21 +563,21 @@ vim.keymap.set("n", "<leader>E", "<cmd>Neotree toggle<cr>", { desc = "Toggles Ne
 -- [[ mini.pairs ]]
 -- https://github.com/echasnovski/mini.pairs
 -- TODO: Ignore auto completion if cursor follows a word
-require("mini.pairs").setup({
-	-- mappings = {
-	--   ['('] = { action = 'open', pair = '()', neigh_pattern = '[^\\].' },
-	--   ['['] = { action = 'open', pair = '[]', neigh_pattern = '[^\\].' },
-	--   ['{'] = { action = 'open', pair = '{}', neigh_pattern = '[^\\].' },
-	--
-	--   [')'] = { action = 'close', pair = '()', neigh_pattern = '[^\\].' },
-	--   [']'] = { action = 'close', pair = '[]', neigh_pattern = '[^\\].' },
-	--   ['}'] = { action = 'close', pair = '{}', neigh_pattern = '[^\\].' },
-	--
-	--   ['"'] = { action = 'closeopen', pair = '""', neigh_pattern = '[^\\].', register = { cr = false } },
-	--   ["'"] = { action = 'closeopen', pair = "''", neigh_pattern = '[^%a\\].', register = { cr = false } },
-	--   ['`'] = { action = 'closeopen', pair = '``', neigh_pattern = '[^\\].', register = { cr = false } },
-	-- },
-})
+-- require("mini.pairs").setup({
+-- mappings = {
+--   ['('] = { action = 'open', pair = '()', neigh_pattern = '[^\\].' },
+--   ['['] = { action = 'open', pair = '[]', neigh_pattern = '[^\\].' },
+--   ['{'] = { action = 'open', pair = '{}', neigh_pattern = '[^\\].' },
+--
+--   [')'] = { action = 'close', pair = '()', neigh_pattern = '[^\\].' },
+--   [']'] = { action = 'close', pair = '[]', neigh_pattern = '[^\\].' },
+--   ['}'] = { action = 'close', pair = '{}', neigh_pattern = '[^\\].' },
+--
+--   ['"'] = { action = 'closeopen', pair = '""', neigh_pattern = '[^\\].', register = { cr = false } },
+--   ["'"] = { action = 'closeopen', pair = "''", neigh_pattern = '[^%a\\].', register = { cr = false } },
+--   ['`'] = { action = 'closeopen', pair = '``', neigh_pattern = '[^\\].', register = { cr = false } },
+-- },
+-- })
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
@@ -588,6 +588,11 @@ require("telescope").setup({
 				["<C-u>"] = false,
 				["<C-d>"] = false,
 			},
+		},
+	},
+	pickers = {
+		find_files = {
+			hidden = true,
 		},
 	},
 	extensions = {

@@ -41,6 +41,13 @@ require("lazy").setup({
 	-- { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
 
 	{
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		config = true,
+		opts = {},
+	},
+
+	{
 		"LintaoAmons/scratch.nvim",
 		event = "VeryLazy",
 	},

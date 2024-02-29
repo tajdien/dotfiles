@@ -6,6 +6,8 @@ local uv = vim.uv or vim.loop
 -- move plugins to plugin folder
 -- Make copy pasta work in kitty
 -- make noice nice and try to make it work as i expect
+-- prettier times out one large files
+-- Add eslint lmfao
 
 -- Leader set to <Space>
 vim.g.mapleader = " "
@@ -502,21 +504,22 @@ vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 require("conform").setup({
 	formatters_by_ft = {
 		lua = { "stylua" },
-		javascript = { "prettier" },
-		javascriptreact = { "prettier" },
-		typescript = { "prettier" },
-		typescriptreact = { "prettier" },
-		vue = { "prettier" },
-		css = { "prettier" },
-		scss = { "prettier" },
-		less = { "prettier" },
-		html = { "prettier" },
-		json = { "prettier" },
-		yaml = { "prettier" },
-		markdown = { "prettier" },
-		graphql = { "prettier" },
+		javascript = { "prettierd" },
+		javascriptreact = { "prettierd" },
+		typescript = { "prettierd" },
+		typescriptreact = { "prettierd" },
+		vue = { "prettierd" },
+		css = { "prettierd" },
+		scss = { "prettierd" },
+		less = { "prettierd" },
+		html = { "prettierd" },
+		json = { "prettierd" },
+		yaml = { "prettierd" },
+		markdown = { "prettierd" },
+		graphql = { "prettierd" },
 	},
-	format_on_save = { timeout_ms = 500, lsp_fallback = true }, -- format on save
+	format_on_save = { timeout_ms = 500 },
+	format_after_save = { lsp_fallback = true },
 	async = true,
 	quiet = true,
 })
@@ -685,7 +688,7 @@ vim.api.nvim_create_user_command("LiveGrepGitRoot", live_grep_git_root, {})
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
--- Defer Treesitter setup after first render to improve startup time of 'nvim {filename}'
+-- Defer Treesitter setup after first render to improve startup time of 'nvim export PATH=$PATH:/path/to/hg/directory{filename}'
 vim.defer_fn(function()
 	require("nvim-treesitter.configs").setup({
 		-- Add languages to be installed here
@@ -708,7 +711,7 @@ vim.defer_fn(function()
 		},
 
 		-- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
-		auto_install = false,
+		auto_install = true,
 
 		highlight = { enable = true },
 		indent = { enable = true },
@@ -813,7 +816,7 @@ local on_attach = function(_, bufnr)
 	nmap("<leader>re", vim.lsp.buf.rename, "[R]e[n]ame")
 	nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 
-	-- TODO this looks very with dracula
+	-- TODO this looks very with dracula, add border around it
 	-- see here https://github.com/jdhao/nvim-config/blob/master/lua/config/lsp.lua#L177-L179
 	nmap("K", vim.lsp.buf.hover, "Hover Documentation")
 	nmap("<C-k>", vim.lsp.buf.signature_help, "Signature Documentation")

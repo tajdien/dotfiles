@@ -34,7 +34,22 @@ vim.opt.rtp:prepend(lazypath)
 
 -- [[ Configure plugins ]]
 require("lazy").setup({
-	--	spec = { import = "plugins" },
+	-- completely useless
+	{
+		"tamton-aquib/duck.nvim",
+		config = function()
+			vim.keymap.set("n", "<leader>dd", function()
+				require("duck").hatch()
+			end, { desc = "Hatch a new duck" })
+			vim.keymap.set("n", "<leader>dk", function()
+				require("duck").cook()
+			end, { desc = "Cook the current duck" })
+			vim.keymap.set("n", "<leader>da", function()
+				require("duck").cook_all()
+			end, { desc = "Cook all the ducks" })
+		end,
+	},
+
 	-- THEMES
 	{ "Mofiqul/dracula.nvim", lazy = false, priority = 1000, opts = {} },
 	-- { "folke/tokyonight.nvim", lazy = false, priority = 1000, opts = {} },
@@ -67,7 +82,15 @@ require("lazy").setup({
 	{ "github/copilot.vim" }, -- copilot
 	{ "folke/which-key.nvim", ots = {} }, -- show which keybinds are available
 	{ "stevearc/conform.nvim" }, -- formatter
-	{ "justinmk/vim-sneak" }, -- Sneak with S
+
+	-- { "justinmk/vim-sneak" }, -- Sneak with S
+	{
+		"ggandor/leap.nvim",
+		config = function()
+			require("leap").create_default_mappings()
+		end,
+	},
+
 	{ "tpope/vim-repeat" }, -- Enables repeating of commands from plugins with . TODO
 
 	{ "tzachar/highlight-undo.nvim" }, -- Highlights the last undo and redo
@@ -79,6 +102,7 @@ require("lazy").setup({
 			require("local-highlight").setup()
 		end,
 	},
+
 	-- Comment shortcut
 	{
 		"numToStr/Comment.nvim",
@@ -228,23 +252,6 @@ require("lazy").setup({
 	},
 
 	{
-		"akinsho/toggleterm.nvim",
-		version = "*",
-		config = function()
-			require("toggleterm").setup({
-				size = 20,
-				open_mapping = [[<C-t>]],
-				hide_numbers = true, -- hide the number column in toggleterm buffers
-				shade_terminals = true,
-				shading_factor = 1, -- degree by which to darken to terminal colour, default: 1 for dark backgrounds, 3 for light
-				start_in_insert = true, -- start terminal in insert mode
-				insert_mappings = true, -- whether or not the open mapping applies in insert mode
-				persist_size = true,
-				direction = "float",
-			})
-		end,
-	},
-	{
 		"rest-nvim/rest.nvim",
 		requires = { "nvim-lua/plenary.nvim" },
 		config = function()
@@ -281,16 +288,8 @@ require("lazy").setup({
 		end,
 	},
 
-	-- Turbo log
+	-- Turbo log TODO fork and make it work as i want
 	{ "https://github.com/gaelph/logsitter.nvim" },
-
-	-- TODO: broken: try to fix
-	-- {
-	-- 	"https://github.com/ggandor/leap.nvim",
-	-- 	config = function()
-	-- 		require("leap").add_default_mappings()({})
-	-- 	end,
-	-- },
 
 	{
 		-- LSP Configuration
@@ -330,12 +329,10 @@ require("lazy").setup({
 		},
 	},
 
-	-- Statusbar at the bottom
 	{
 		"nvim-lualine/lualine.nvim",
 		event = "VeryLazy",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
-		-- See `:help lualine.txt`
 		opts = {
 			options = {
 				theme = "auto",
@@ -344,7 +341,7 @@ require("lazy").setup({
 				component_separators = { left = "", right = "" },
 				section_separators = { left = "", right = "" },
 			},
-			section = {
+			sections = {
 				lualine_c = {
 					{
 						"filename",
@@ -380,33 +377,6 @@ require("lazy").setup({
 			},
 		},
 	},
-	--
-	-- {
-	-- 	opts = {
-	-- 		indent = {
-	-- 			char = "│",
-	-- 			tab_char = "│",
-	-- 		},
-	-- 		scope = { enabled = false },
-	-- 		exclude = {
-	-- 			filetypes = {
-	-- 				"help",
-	-- 				"alpha",
-	-- 				"dashboard",
-	-- 				"neo-tree",
-	-- 				"Trouble",
-	-- 				"trouble",
-	-- 				"lazy",
-	-- 				"mason",
-	-- 				"notify",
-	-- 				"toggleterm",
-	-- 				"lazyterm",
-	-- 			},
-	-- 		},
-	-- 	},
-	-- 	"lukas-reineke/indent-blankline.nvim",
-	-- 	main = "ibl",
-	-- },
 
 	-- Tree
 	{
@@ -511,21 +481,21 @@ vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 require("conform").setup({
 	formatters_by_ft = {
 		lua = { "stylua" },
-		javascript = { "prettierd" },
-		javascriptreact = { "prettierd" },
-		typescript = { "prettierd" },
-		typescriptreact = { "prettierd" },
-		vue = { "prettierd" },
-		css = { "prettierd" },
-		scss = { "prettierd" },
-		less = { "prettierd" },
-		html = { "prettierd" },
-		json = { "prettierd" },
-		yaml = { "prettierd" },
-		markdown = { "prettierd" },
-		graphql = { "prettierd" },
+		javascript = { "prettier" },
+		javascriptreact = { "prettier" },
+		typescript = { "prettier" },
+		typescriptreact = { "prettier" },
+		vue = { "prettier" },
+		css = { "prettier" },
+		scss = { "prettier" },
+		less = { "prettier" },
+		html = { "prettier" },
+		json = { "prettier" },
+		yaml = { "prettier" },
+		markdown = { "prettier" },
+		graphql = { "prettier" },
 	},
-	format_on_save = { timeout_ms = 500 },
+	format_on_save = { timeout_ms = 50 },
 	format_after_save = { lsp_fallback = true },
 	async = true,
 	quiet = true,
@@ -568,29 +538,8 @@ require("neo-tree").setup({
 
 vim.keymap.set("n", "<leader>e", "<cmd>Neotree left reveal_force_cwd<cr>", { desc = "Shows Neotree in current file" })
 vim.keymap.set("n", "<leader>E", "<cmd>Neotree toggle<cr>", { desc = "Toggles Neotree" })
---vim.keymap.set("n", "<leader>nt", "<cmd>Neotree toggle", { desc = "Toggles Neotree" })
-
--- [[ mini.pairs ]]
--- https://github.com/echasnovski/mini.pairs
--- TODO: Ignore auto completion if cursor follows a word
--- require("mini.pairs").setup({
--- mappings = {
---   ['('] = { action = 'open', pair = '()', neigh_pattern = '[^\\].' },
---   ['['] = { action = 'open', pair = '[]', neigh_pattern = '[^\\].' },
---   ['{'] = { action = 'open', pair = '{}', neigh_pattern = '[^\\].' },
---
---   [')'] = { action = 'close', pair = '()', neigh_pattern = '[^\\].' },
---   [']'] = { action = 'close', pair = '[]', neigh_pattern = '[^\\].' },
---   ['}'] = { action = 'close', pair = '{}', neigh_pattern = '[^\\].' },
---
---   ['"'] = { action = 'closeopen', pair = '""', neigh_pattern = '[^\\].', register = { cr = false } },
---   ["'"] = { action = 'closeopen', pair = "''", neigh_pattern = '[^%a\\].', register = { cr = false } },
---   ['`'] = { action = 'closeopen', pair = '``', neigh_pattern = '[^\\].', register = { cr = false } },
--- },
--- })
 
 -- [[ Configure Telescope ]]
--- See `:help telescope` and `:help telescope.setup()`
 require("telescope").setup({
 	defaults = {
 		mappings = {
@@ -607,10 +556,7 @@ require("telescope").setup({
 	},
 	extensions = {
 		["ui-select"] = {
-			require("telescope.themes").get_dropdown({
-				-- even more opts
-			}),
-
+			require("telescope.themes").get_dropdown({}),
 			-- pseudo code / specification for writing custom displays, like the one
 			-- for "codeactions"
 			-- specific_opts = {
@@ -631,29 +577,6 @@ require("telescope").setup({
 -- To get ui-select loaded and working with telescope, you need to call load_extension, somewhere after setup function:
 require("telescope").load_extension("ui-select")
 
--- require("fine-cmdline").setup({
--- 	cmdline = {
--- 		enable_keymaps = true,
--- 		smart_history = true,
--- 		prompt = ": ",
--- 	},
--- 	popup = {
--- 		position = {
--- 			row = "30%",
--- 			col = "50%",
--- 		},
--- 		size = {
--- 			width = "60%",
--- 		},
--- 		border = {
--- 			style = "rounded",
--- 		},
--- 		win_options = {
--- 			winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
--- 		},
--- 	},
--- })
---
 -- Enable telescope fzf native, if installed
 pcall(require("telescope").load_extension, "fzf")
 
@@ -828,16 +751,10 @@ local on_attach = function(_, bufnr)
 	nmap("K", vim.lsp.buf.hover, "Hover Documentation")
 	nmap("<C-k>", vim.lsp.buf.signature_help, "Signature Documentation")
 
-	-- nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-	-- nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-	-- nmap('<leader>wl', function()
-	--   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-	-- end, '[W]orkspace [L]ist Folders')
-
 	-- Create a command `:Format` local to the LSP buffer
-	vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
-		vim.lsp.buf.format()
-	end, { desc = "Format current buffer with LSP" })
+	-- vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
+	-- 	vim.lsp.buf.format()
+	-- end, { desc = "Format current buffer with LSP" })
 end
 
 -- document existing key chains

@@ -239,16 +239,62 @@ require("lazy").setup({
 		end,
 	},
 
+  -- stylua: ignore
 	{
 		"folke/persistence.nvim",
 		event = "BufReadPre",
 		opts = { options = vim.opt.sessionoptions:get() },
-  -- stylua: ignore
-  keys = {
-    { "<leader>qs", function() require("persistence").load() end, desc = "Restore Session" },
-    { "<leader>ql", function() require("persistence").load({ last = true }) end, desc = "Restore Last Session" },
-    { "<leader>qd", function() require("persistence").stop() end, desc = "Don't Save Current Session" },
-  },
+		keys = {
+			{ "<leader>qs", function() require("persistence").load() end, desc = "Restore Session", },
+			{ "<leader>ql", function() require("persistence").load({ last = true }) end, desc = "Restore Last Session", },
+			{ "<leader>qd", function() require("persistence").stop() end, desc = "Don't Save Current Session", },
+		},
+	},
+
+	{
+		"stevearc/oil.nvim",
+		config = function()
+			require("oil").setup({
+				keymaps = {
+					["g?"] = "actions.show_help",
+					["<CR>"] = "actions.select",
+					["gd"] = "actions.select",
+					["l"] = "actions.select",
+					["<C-s>"] = "actions.select_vsplit",
+					["<C-h>"] = "actions.select_split",
+					["<C-t>"] = "actions.select_tab",
+					["<C-p>"] = "actions.preview",
+					["<C-c>"] = "actions.close",
+					["q"] = "actions.close",
+					["esc"] = "actions.close",
+					["<C-l>"] = "actions.refresh",
+					["-"] = "actions.parent",
+					["<Bs>"] = "actions.parent",
+					["h"] = "actions.parent",
+					["_"] = "actions.open_cwd",
+					["`"] = "actions.cd",
+					["~"] = "actions.tcd",
+					["gs"] = "actions.change_sort",
+					["gx"] = "actions.open_external",
+					["g."] = "actions.toggle_hidden",
+					["g\\"] = "actions.toggle_trash",
+				},
+				view_options = {
+					show_hidden = true,
+				},
+			})
+		end,
+		keys = {
+			{ "-", "<CMD>Oil<CR>", desc = "Open Oil" },
+		},
+	},
+
+	{
+		"b0o/incline.nvim",
+		event = "VeryLazy",
+		config = function()
+			require("incline").setup()
+		end,
 	},
 
 	{

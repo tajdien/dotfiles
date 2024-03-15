@@ -2,7 +2,7 @@ local map = vim.keymap.set
 
 -- Utils
 map("n", "<leader>w", ":w<CR>", { noremap = true, silent = true, desc = "Save the file" })
-map("n", "<leader>W", ":wa<CR>", { noremap = true, silent = true, desc = "Save the file" })
+map("n", "<leader><S-w>", ":wa<CR>", { noremap = true, silent = true, desc = "Save the file" })
 
 -- Just to beginning and end of lines easier. From http://vimbits.com/bits/16
 map("x", "H", "^", { desc = "Beginning of line" })
@@ -18,9 +18,6 @@ map("n", "<leader>gb", "<cmd>GitBlameToggle<cr>", { desc = "Toggle [G]it [B]lame
 -- Diagnostic ("Problems" from IDE) keymaps
 map("n", "<leader>p", vim.diagnostic.goto_next, { desc = "Next [P]roblem" })
 map("n", "<leader>P", vim.diagnostic.goto_prev, { desc = "Previous [P]roblem" })
-
--- Floating cmd line
--- map("n", ":", "<cmd>FineCmdline<CR>", { noremap = true })
 
 -- map("n", "<A-p>", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
 map("n", "<A-p>", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
@@ -42,9 +39,7 @@ map("n", "<A-j>", "<C-w>j", { desc = "Move to bottom window" })
 map("n", "<A-l>", "<C-w>l", { desc = "Move to right window" })
 
 -- [[ Bufferline ]]
-map("n", "<S-l>", "<cmd>BufferNext<cr>", { desc = "Next buffer" })
 map("n", "<S-x>", "<cmd>BufferNext<cr>", { desc = "Next buffer" })
-map("n", "<S-h>", "<cmd>BufferPrevious<cr>", { desc = "Prev buffer" })
 map("n", "<S-z>", "<cmd>BufferPrevious<cr>", { desc = "Prev buffer" })
 map("n", "<A-w>", "<cmd>BufferClose<cr>", { desc = "Close buffer" })
 map("n", "<A-s-w>", "<cmd>BufferRestore<cr>", { desc = "Restore Buffer" })
@@ -54,14 +49,6 @@ map("n", "<leader>bo", "<Cmd>BufferCloseAllButCurrent<CR>", { desc = "Close all 
 -- nnoremap <silent>    <A-2> <Cmd>BufferGoto 2<CR>
 -- nnoremap <silent>    <A-3> <Cmd>BufferGoto 3<CR>
 -- nnoremap <silent>    <A-0> <Cmd>BufferLast<CR>
-
--- Toggleterm
--- TODO: this does not work good
-map("n", "<leader>tl", ":ToggleTerm size=40 direction=vertical name=desktop<CR>", { desc = "Toggle terminal" })
--- :ToggleTerm size=40 dir=~/Desktop direction=horizontal name=desktop
-
--- Runs the current curl under the cursor
-map("n", "<leader>hc", "<Plug>RestNvim", { desc = "[H]ttp [c]ursor" })
 
 -- Turbolog like .cl in webstorm
 map("n", "<leader>cl", "<cmd>lua require('logsitter').log()<cr>", { desc = "[L]og" })

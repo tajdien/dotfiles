@@ -51,9 +51,8 @@ require("lazy").setup({
 	},
 
 	-- THEMES
-	{ "Mofiqul/dracula.nvim", lazy = false, priority = 1000, opts = {} },
-	-- { "folke/tokyonight.nvim", lazy = false, priority = 1000, opts = {} },
-	-- { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+	{ "binhtran432k/dracula.nvim", lazy = false, priority = 1000, opts = {} },
+	-- { "Mofiqul/dracula.nvim", lazy = false, priority = 1000, opts = {} },
 
 	{
 		"windwp/nvim-autopairs",
@@ -83,7 +82,6 @@ require("lazy").setup({
 	{ "folke/which-key.nvim", ots = {} }, -- show which keybinds are available
 	{ "stevearc/conform.nvim" }, -- formatter
 
-	-- { "justinmk/vim-sneak" }, -- Sneak with S
 	{
 		"ggandor/leap.nvim",
 		config = function()
@@ -91,11 +89,7 @@ require("lazy").setup({
 		end,
 	},
 
-	{ "tpope/vim-repeat" }, -- Enables repeating of commands from plugins with . TODO
-
 	{ "tzachar/highlight-undo.nvim" }, -- Highlights the last undo and redo
-
-	-- { "echwsnovski/mini.nvim" }, -- Auto close and open pairs like {[ ...
 	{
 		"tzachar/local-highlight.nvim",
 		config = function()
@@ -103,13 +97,13 @@ require("lazy").setup({
 		end,
 	},
 
-	-- Comment shortcut
 	{
 		"numToStr/Comment.nvim",
 		config = function()
 			require("Comment").setup({})
 		end,
 	},
+
 	-- Smooth scrolling
 	{
 		"karb94/neoscroll.nvim",
@@ -260,6 +254,7 @@ require("lazy").setup({
 					["<CR>"] = "actions.select",
 					["gd"] = "actions.select",
 					["l"] = "actions.select",
+					["o"] = "actions.select",
 					["<C-s>"] = "actions.select_vsplit",
 					["<C-h>"] = "actions.select_split",
 					["<C-t>"] = "actions.select_tab",
@@ -290,14 +285,6 @@ require("lazy").setup({
 	},
 
 	{
-		"b0o/incline.nvim",
-		event = "VeryLazy",
-		config = function()
-			require("incline").setup()
-		end,
-	},
-
-	{
 		"rest-nvim/rest.nvim",
 		requires = { "nvim-lua/plenary.nvim" },
 		config = function()
@@ -324,6 +311,10 @@ require("lazy").setup({
 				},
 			})
 		end,
+
+		keys = {
+			{ "<leader>hc", "<Plug>RestNvim", desc = "[H]ttp [c]ursor" },
+		},
 	},
 
 	-- jest todo
@@ -335,7 +326,7 @@ require("lazy").setup({
 	},
 
 	-- Turbo log TODO fork and make it work as i want
-	{ "https://github.com/gaelph/logsitter.nvim" },
+	{ "gaelph/logsitter.nvim" },
 
 	{
 		-- LSP Configuration
@@ -441,11 +432,22 @@ require("lazy").setup({
 		"NeogitOrg/neogit",
 		dependencies = {
 			"nvim-lua/plenary.nvim", -- required
-			"nvim-telescope/telescope.nvim", -- optional
-			"sindrets/diffview.nvim", -- optional
+			"nvim-telescope/telescope.nvim",
+			"sindrets/diffview.nvim",
 			"ibhagwan/fzf-lua", -- optional
 		},
 		config = true,
+	},
+	{ "tpope/vim-fugitive", lazy = true },
+	{
+		"nvimdev/dashboard-nvim",
+		event = "VimEnter",
+		config = function()
+			require("dashboard").setup({
+				-- config
+			})
+		end,
+		dependencies = { { "nvim-tree/nvim-web-devicons" } },
 	},
 
 	{
@@ -491,7 +493,8 @@ vim.cmd([[colorscheme dracula]]) -- colorscheme
 -- [[ Telescope KEYBINDS ]]
 -- See `:help telescope.builtin`
 vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles, { desc = "[?] Find recently opened files" })
-vim.keymap.set("n", "<leader><space>", require("telescope.builtin").buffers, { desc = "[ ] Find existing buffers" })
+vim.keymap.set("n", "<leader><space>", require("telescope.builtin").buffers, { desc = "[space] Find existing buffers" })
+
 -- vim.keymap.set("n", "<leader>ff", function()
 -- 	-- You can pass additional configuration to telescope to change theme, layout, etc.
 -- 	require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
@@ -499,6 +502,7 @@ vim.keymap.set("n", "<leader><space>", require("telescope.builtin").buffers, { d
 -- 		previewer = true,
 -- 	}))
 -- end, { desc = "Fuzzily search in current buffer" })
+--
 vim.keymap.set(
 	"n",
 	"<leader>ff",

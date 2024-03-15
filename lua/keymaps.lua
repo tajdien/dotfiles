@@ -2,6 +2,7 @@ local map = vim.keymap.set
 
 -- Utils
 map("n", "<leader>w", ":w<CR>", { noremap = true, silent = true, desc = "Save the file" })
+map("n", "<leader>W", ":wa<CR>", { noremap = true, silent = true, desc = "Save the file" })
 
 -- Just to beginning and end of lines easier. From http://vimbits.com/bits/16
 map("x", "H", "^", { desc = "Beginning of line" })

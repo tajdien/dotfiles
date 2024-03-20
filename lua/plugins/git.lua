@@ -24,12 +24,17 @@ M = {
 	-- Git signs on the left side
 	{ "tpope/vim-fugitive", lazy = true, config = true },
 
-	-- TODO: Might be replaced with Fugitive
 	{
-		"f-person/git-blame.nvim",
-		opts = { enabled = false }, -- disable by default,
+		"FabijanZulj/blame.nvim",
+		cmd = "ToggleBlame",
+		-- stylua: ignore
 		keys = {
-			{ "<leader>gb", "<cmd>GitBlameToggle<cr>", desc = "Git-Blame: Toggle [G]it [B]lame" },
+			{ '<leader>gb', '<cmd>ToggleBlame virtual<CR>', desc = 'Git blame' },
+			{ '<leader>gB', '<cmd>ToggleBlame window<CR>', desc = 'Git blame (window)' },
+		},
+		opts = {
+			date_format = "%Y-%m-%d %H:%M",
+			merge_consecutive = true,
 		},
 	},
 }

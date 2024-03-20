@@ -3,17 +3,13 @@ local map = vim.keymap.set
 -- Utils
 map("n", "<leader>w", ":w<CR>", { noremap = true, silent = true, desc = "Save the file" })
 map("n", "<leader><S-w>", ":wa<CR>", { noremap = true, silent = true, desc = "Save the file" })
+map("n", "<C-w>Q", ":q!<CR>", { noremap = true, silent = true, desc = "Force close the file" })
 
 -- Just to beginning and end of lines easier. From http://vimbits.com/bits/16
 map("x", "H", "^", { desc = "Beginning of line" })
 map("x", "L", "$", { desc = "End of line" })
 
 map("n", "U", "<C-r>", { desc = "Redo" }) -- Redo
-
--- Git
-map("n", "<leader>gm", "<CMD>Neogit<CR>", { desc = "[G]it [M]enu" })
-map("n", "gm", "<CMD>Neogit<CR>", { desc = "[G]it [M]enu" })
-map("n", "<leader>gb", "<cmd>GitBlameToggle<cr>", { desc = "Toggle [G]it [B]lame" })
 
 -- Diagnostic ("Problems" from IDE) keymaps
 map("n", "<leader>p", vim.diagnostic.goto_next, { desc = "Next [P]roblem" })
@@ -42,6 +38,7 @@ map("n", "<A-l>", "<C-w>l", { desc = "Move to right window" })
 map("n", "<S-x>", "<cmd>BufferNext<cr>", { desc = "Next buffer" })
 map("n", "<S-z>", "<cmd>BufferPrevious<cr>", { desc = "Prev buffer" })
 map("n", "<A-w>", "<cmd>BufferClose<cr>", { desc = "Close buffer" })
+map("n", "<leader>bc", "<cmd>BufferClose<cr>", { desc = "Close buffer" })
 map("n", "<A-s-w>", "<cmd>BufferRestore<cr>", { desc = "Restore Buffer" })
 map("n", "<C-p>", "<Cmd>BufferPick<CR>", { desc = "Pick buffer" })
 map("n", "<leader>bo", "<Cmd>BufferCloseAllButCurrent<CR>", { desc = "Close all buffers but current" })
@@ -56,19 +53,6 @@ map("n", "<leader>cl", "<cmd>lua require('logsitter').log()<cr>", { desc = "[L]o
 -- Scroll up and down
 map("n", "<ScrollWheelUp>", "<C-y>", { noremap = true })
 map("n", "<ScrollWheelDown>", "<C-e>", { noremap = true })
-
--- Scratchpad
-map("n", "<leader>sn", "<cmd>Scratch<cr>")
-map("n", "<leader>so", "<cmd>ScratchOpen<cr>")
-
--- Run nearest test(s) under the cursor
-map("n", "<leader>jc", ':lua require"jester".run()<CR>', { desc = "[J]est run [C]ursor" })
-
--- Run current file
-map("n", "<leader>jf", ':lua require"jester".run_file()<CR>', { desc = "[J]est run [F]ile" })
-
--- Run last test(s)
-map("n", "<leader>jl", ':lua require"jester".run_last()<CR>', { desc = "[J]est run [L]ast" })
 
 -- TODO Install DAP
 -- Debug nearest test(s) under the cursor

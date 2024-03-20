@@ -17,8 +17,8 @@ M = {
 		"LintaoAmons/scratch.nvim",
 		event = "VeryLazy",
 		keys = {
-			{ "n", "<leader>sn", "<cmd>Scratch<cr>", desc = { "[s]ratch [n]ew" } },
-			{ "n", "<leader>so", "<cmd>ScratchOpen<cr>", desc = { "[s]ratch [o]pen" } },
+			{ "<leader>sn", "<cmd>Scratch<cr>", desc = { "[s]ratch [n]ew" } },
+			{ "<leader>so", "<cmd>ScratchOpen<cr>", desc = { "[s]ratch [o]pen" } },
 		},
 	},
 

@@ -17,7 +17,7 @@ M = {
 		"LintaoAmons/scratch.nvim",
 		event = "VeryLazy",
 		keys = {
-			{ "<leader>sn", "<cmd>Scratch<cr>", desc = { "[s]ratch [n]ew" } },
+			{ "<leader>snn", "<cmd>Scratch<cr>", desc = { "[s]ratch [n]ew" } },
 			{ "<leader>so", "<cmd>ScratchOpen<cr>", desc = { "[s]ratch [o]pen" } },
 		},
 	},
@@ -102,6 +102,15 @@ M = {
 				desc = "Don't Save Current Session",
 			},
 		},
+	},
+
+	{
+		"iamcco/markdown-preview.nvim",
+		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+		ft = { "markdown" },
+		build = function()
+			vim.fn["mkdp#util#install"]()
+		end,
 	},
 }
 

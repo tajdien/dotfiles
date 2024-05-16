@@ -14,9 +14,9 @@ M = {
 			require("mason").setup()
 			local mason_lspconfig = require("mason-lspconfig")
 			mason_lspconfig.setup()
-
-			-- Setup neovim lua configuration
-			require("neodev").setup()
+			require("neodev").setup({
+				library = { plugins = { "neotest" }, types = true },
+			})
 
 			local servers = {
 				-- clangd = {},

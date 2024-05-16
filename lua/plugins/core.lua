@@ -62,7 +62,10 @@ M = {
 	{ "tzachar/local-highlight.nvim" },
 
 	-- turbo console log
-	{ "gaelph/logsitter.nvim" },
+	{ "gaelph/logsitter.nvim", opts = {
+		path_format = "fileonly",
+		prefix = "📚",
+	} },
 
 	-- Detect tabstop and shiftwidth automatically
 	{ "tpope/vim-sleuth" },
@@ -158,17 +161,23 @@ M = {
 		"nvim-neotest/neotest",
 		dependencies = {
 			"nvim-neotest/nvim-nio",
-			"nvim-lua/plenary.nvim",
 			"antoinemadec/FixCursorHold.nvim",
-			"nvim-treesitter/nvim-treesitter",
 			"nvim-neotest/neotest-jest",
 		},
 		config = function()
 			require("neotest").setup({
-				adapter = {
+				discovery = { enabled = false },
+				output = { open_on_run = true },
+				adapters = {
 					require("neotest-jest")({
 						jestCommand = "npm test --",
-						jestConfigFile = "custom.jest.config.ts",
+						jestConfigFile = function(file)
+							if string.find(file, "/packages/") then
+								return string.match(file, "(.-/[^/]+/)src") .. "jest.config.ts"
+							end
+
+							return vim.fn.getcwd() .. "/jest.config.ts"
+						end,
 						env = { CI = true },
 						cwd = function(path)
 							return vim.fn.getcwd()
@@ -177,14 +186,12 @@ M = {
 				},
 			})
 		end,
+		-- stylua: ignore
 		keys = {
-			{
-				"<leader>tr",
-				function()
-					require("neotest").run.run(vim.fn.expand("%"))
-				end,
-				desc = "run test",
-			},
+			{ "<leader>tr", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "run test" },
+			{ "<leader>tw", function() require("neotest").run.run({ jestCommand = "jest --watch " }) end, desc = "run test" },
+			{ "<leader>ts", function() require("neotest").summary.toggle() end, desc = "Toggle Summary" },
+      { "<leader>to", function() require("neotest").output_panel.toggle() end, desc = "Toggle Output Panel" },
 		},
 	},
 }

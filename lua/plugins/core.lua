@@ -1,5 +1,18 @@
 local M
 
+local function handle_references_response(result)
+	require("telescope.pickers")
+		.new({}, {
+			prompt_title = "LSP References",
+			finder = require("telescope.finders").new_table({
+				results = vim.lsp.util.locations_to_items(result, "utf-16"),
+				entry_maker = require("telescope.make_entry").gen_from_quickfix(),
+			}),
+			previewer = require("telescope.config").values.qflist_previewer({}),
+		})
+		:find()
+end
+
 M = {
 	-- Colorscheme
 	{
@@ -104,6 +117,7 @@ M = {
 		},
 	},
 
+	-- Markdown preview in browser
 	{
 		"iamcco/markdown-preview.nvim",
 		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
@@ -111,6 +125,67 @@ M = {
 		build = function()
 			vim.fn["mkdp#util#install"]()
 		end,
+		keys = {
+			{ "<leader>mp", "<cmd>MarkdownPreviewToggle<cr>", desc = "Markdown Preview" },
+		},
+	},
+
+	-- JetBrains
+	{
+		"KostkaBrukowa/definition-or-references.nvim",
+		config = function()
+			require("definition-or-references").setup({
+				on_references_result = handle_references_response,
+			})
+		end,
+	},
+
+	-- -- Simplify macro recording
+	-- {
+	-- 	"chrisgrieser/nvim-recorder",
+	-- 	opts = {},
+	-- },
+
+	-- Lua package manager
+	{
+		"vhyrro/luarocks.nvim",
+		priority = 1000,
+		config = true,
+	},
+
+	-- Test runner
+	{
+		"nvim-neotest/neotest",
+		dependencies = {
+			"nvim-neotest/nvim-nio",
+			"nvim-lua/plenary.nvim",
+			"antoinemadec/FixCursorHold.nvim",
+			"nvim-treesitter/nvim-treesitter",
+			"nvim-neotest/neotest-jest",
+		},
+		config = function()
+			require("neotest").setup({
+				adapter = {
+					require("neotest-jest")({
+						jestCommand = "npm test --",
+						jestConfigFile = "custom.jest.config.ts",
+						env = { CI = true },
+						cwd = function(path)
+							return vim.fn.getcwd()
+						end,
+					}),
+				},
+			})
+		end,
+		keys = {
+			{
+				"<leader>tr",
+				function()
+					require("neotest").run.run(vim.fn.expand("%"))
+				end,
+				desc = "run test",
+			},
+		},
 	},
 }
 

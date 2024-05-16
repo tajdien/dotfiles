@@ -40,7 +40,7 @@ map("n", "<S-z>", "<cmd>BufferPrevious<cr>", { desc = "Prev buffer" })
 map("n", "<A-w>", "<cmd>BufferClose<cr>", { desc = "Close buffer" })
 map("n", "<leader>bc", "<cmd>BufferClose<cr>", { desc = "Close buffer" })
 map("n", "<A-s-w>", "<cmd>BufferRestore<cr>", { desc = "Restore Buffer" })
-map("n", "<C-p>", "<Cmd>BufferPick<CR>", { desc = "Pick buffer" })
+map("n", "<leader>bp", "<Cmd>BufferPick<CR>", { desc = "Pick buffer" })
 map("n", "<leader>bo", "<Cmd>BufferCloseAllButCurrent<CR>", { desc = "Close all buffers but current" })
 -- nnoremap <silent>    <A-1> <Cmd>BufferGoto 1<CR>
 -- nnoremap <silent>    <A-2> <Cmd>BufferGoto 2<CR>

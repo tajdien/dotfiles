@@ -79,7 +79,7 @@ M = {
 		end,
 		opts = {
 			sidebar_filetypes = {
-				["neo-tree"] = { event = "bufwipeout", text = "neotree" },
+				["neo-tree"] = { event = "bufwipeout", text = "Neotree" },
 			},
 			icons = {
 				button = false,
@@ -107,6 +107,7 @@ M = {
 						path = 1,
 					},
 				},
+				-- lualine_x = { "fileformat", "filetype", require("recorder").recordingStatus },
 				lualine_x = { "fileformat", "filetype" },
 			},
 		},

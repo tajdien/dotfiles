@@ -67,7 +67,10 @@ M = {
 					vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
 				end
 
-				nmap("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+				-- Replaced with plugin (KostkaBrukowa/definition-or-references.nvim) in core.lua
+				-- nmap("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+				nmap("gd", require("definition-or-references").definition_or_references, "[G]oto [D]efinition")
+
 				-- Lesser used LSP functionality
 				nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 				nmap("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")

@@ -133,7 +133,7 @@ M = {
 		},
 	},
 
-	-- JetBrains
+	-- JetBrains like go-to-definition
 	{
 		"KostkaBrukowa/definition-or-references.nvim",
 		config = function()
@@ -189,7 +189,7 @@ M = {
 		-- stylua: ignore
 		keys = {
 			{ "<leader>tr", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "run test" },
-			{ "<leader>tw", function() require("neotest").run.run({ jestCommand = "jest --watch " }) end, desc = "run test" },
+			{ "<leader>tw", function() require("neotest").run.run({ jestCommand = "jest --watch " }) end, desc = "run test in watch" }, -- todo
 			{ "<leader>ts", function() require("neotest").summary.toggle() end, desc = "Toggle Summary" },
       { "<leader>to", function() require("neotest").output_panel.toggle() end, desc = "Toggle Output Panel" },
 		},

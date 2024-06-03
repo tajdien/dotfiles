@@ -21,16 +21,14 @@ M = {
 						"vimdoc",
 						"vim",
 						"bash",
-						"markdown",
 						"regex",
+						"markdown",
 						"markdown_inline",
 						"http",
 						"json",
 					},
-
 					-- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
 					auto_install = true,
-
 					highlight = { enable = true },
 					indent = { enable = true },
 					incremental_selection = {

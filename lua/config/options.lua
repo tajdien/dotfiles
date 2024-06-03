@@ -17,6 +17,10 @@ opt.cursorline = true -- Shows cursor in line
 
 opt.scrolloff = 10 -- Keep lines between cursor
 
+-- obsidian.nvim
+-- https://github.com/epwalsh/obsidian.nvim/issues/286
+opt.conceallevel = 2
+
 opt.relativenumber = true -- Relative line numbers
 opt.number = true -- Show line numbers
 

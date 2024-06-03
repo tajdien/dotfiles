@@ -1,18 +1,5 @@
 local M
 
-local function handle_references_response(result)
-	require("telescope.pickers")
-		.new({}, {
-			prompt_title = "LSP References",
-			finder = require("telescope.finders").new_table({
-				results = vim.lsp.util.locations_to_items(result, "utf-16"),
-				entry_maker = require("telescope.make_entry").gen_from_quickfix(),
-			}),
-			previewer = require("telescope.config").values.qflist_previewer({}),
-		})
-		:find()
-end
-
 M = {
 	-- Colorscheme
 	{
@@ -133,16 +120,6 @@ M = {
 		},
 	},
 
-	-- JetBrains like go-to-definition
-	{
-		"KostkaBrukowa/definition-or-references.nvim",
-		config = function()
-			require("definition-or-references").setup({
-				on_references_result = handle_references_response,
-			})
-		end,
-	},
-
 	-- -- Simplify macro recording
 	-- {
 	-- 	"chrisgrieser/nvim-recorder",
@@ -154,6 +131,28 @@ M = {
 		"vhyrro/luarocks.nvim",
 		priority = 1000,
 		config = true,
+	},
+
+	{
+		"epwalsh/obsidian.nvim",
+		version = "*", -- recommended, use latest release instead of latest commit
+		lazy = true,
+		ft = "markdown",
+		-- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+		-- event = {
+		--   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+		--   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
+		--   "BufReadPre path/to/my-vault/**.md",
+		--   "BufNewFile path/to/my-vault/**.md",
+		-- },
+		opts = {
+			workspaces = {
+				{
+					name = "Vault",
+					path = "~/documents/Vault",
+				},
+			},
+		},
 	},
 
 	-- Test runner

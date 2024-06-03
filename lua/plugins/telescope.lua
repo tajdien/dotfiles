@@ -1,12 +1,17 @@
 local M
 
--- vim.keymap.set("n", "<leader>ff", function()
--- 	--You can pass additional configuration to telescope to change theme, layout, etc.
--- 	require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
--- 		winblend = 20,
--- 		previewer = true,
--- 	}))
--- end, { desc = "Fuzzily search in current buffer" })
+local function handle_references_response(result)
+	require("telescope.pickers")
+		.new({}, {
+			prompt_title = "LSP References",
+			finder = require("telescope.finders").new_table({
+				results = vim.lsp.util.locations_to_items(result, "utf-16"),
+				entry_maker = require("telescope.make_entry").gen_from_quickfix(),
+			}),
+			previewer = require("telescope.config").values.qflist_previewer({}),
+		})
+		:find()
+end
 
 M = {
 	-- Fuzzy Finder (files, lsp, etc)
@@ -87,6 +92,16 @@ M = {
 	},
 
 	{ "nvim-telescope/telescope-ui-select.nvim" },
+
+	-- JetBrains like go-to-definition
+	{
+		"KostkaBrukowa/definition-or-references.nvim",
+		config = function()
+			require("definition-or-references").setup({
+				on_references_result = handle_references_response,
+			})
+		end,
+	},
 }
 
 return M

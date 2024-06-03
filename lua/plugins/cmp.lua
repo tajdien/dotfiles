@@ -6,26 +6,13 @@ M = {
 		"hrsh7th/nvim-cmp",
 		event = "InsertEnter",
 		dependencies = {
-			"L3MON4D3/LuaSnip", -- Snippet Engine & its associated nvim-cmp source
 			"saadparwaiz1/cmp_luasnip", -- Adds LSP completion capabilities
 			"hrsh7th/cmp-nvim-lsp", -- Adds a number of user-friendly snippetsvim
-			"rafamadriz/friendly-snippets",
-			{ "onsails/lspkind.nvim" },
+			"onsails/lspkind.nvim", -- Format completion items with icons
 		},
 		config = function()
 			local cmp = require("cmp")
-			local lspkind = require("lspkind")
-
-			local luasnip = require("luasnip")
-			require("luasnip.loaders.from_vscode").lazy_load()
-			luasnip.config.setup({})
-
 			cmp.setup({
-				snippet = {
-					expand = function(args)
-						luasnip.lsp_expand(args.body)
-					end,
-				},
 				completion = {
 					completeopt = "menu,menuone,noinsert",
 				},
@@ -47,8 +34,8 @@ M = {
 					documentation = cmp.config.window.bordered(),
 				},
 				formatting = {
-					format = lspkind.cmp_format({
-						mode = "symbol", -- show only symbol annotations
+					format = require("lspkind").cmp_format({
+						-- mode = "symbol", -- show only symbol annotations
 						maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
 						-- can also be a function to dynamically calculate max width such as
 						-- maxwidth = function() return math.floor(0.45 * vim.o.columns) end,
@@ -93,8 +80,6 @@ M = {
 					["<S-Tab>"] = cmp.mapping(function(fallback)
 						if cmp.visible() then
 							cmp.select_prev_item()
-						elseif luasnip.locally_jumpable(-1) then
-							luasnip.jump(-1)
 						else
 							fallback()
 						end

@@ -29,8 +29,8 @@ M = {
 		cmd = "ToggleBlame",
 		-- stylua: ignore
 		keys = {
-			{ '<leader>gb', '<cmd>ToggleBlame virtual<CR>', desc = 'Git blame' },
-			{ '<leader>gB', '<cmd>ToggleBlame window<CR>', desc = 'Git blame (window)' },
+			{ '<leader>gb', '<cmd>BlameToggle virtual<CR>', desc = 'Git blame' },
+			{ '<leader>gB', '<cmd>BlameToggle window<CR>', desc = 'Git blame (window)' },
 		},
 		opts = {
 			date_format = "%Y-%m-%d %H:%M",

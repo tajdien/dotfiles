@@ -28,12 +28,15 @@ M = {
 		},
 	},
 
-	-- Navigate with S
+	-- Leap with S
 	{
 		"ggandor/leap.nvim",
-		config = function()
-			require("leap").create_default_mappings()
-		end,
+		keys = {
+			{ "s", "<Plug>(leap)", { mode = "n" } },
+			{ "S", "<Plug>(leap-from-window)", { mode = "n" } },
+			{ "s", "<Plug>(leap-forward)", { mode = { "x", "o" } } },
+			{ "S", "<Plug>(leap-backward)", { mode = { "x", "o" } } },
+		},
 	},
 
 	-- Quickly comment lines/blocks

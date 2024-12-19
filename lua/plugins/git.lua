@@ -1,5 +1,4 @@
 local M
-local Utils = require("utils")
 
 M = {
 	-- Git Menu
@@ -8,7 +7,6 @@ M = {
 		dependencies = {
 			"nvim-lua/plenary.nvim", -- required
 			"nvim-telescope/telescope.nvim",
-			"sindrets/diffview.nvim",
 			"ibhagwan/fzf-lua", -- optional
 		},
 		config = true,
@@ -18,11 +16,21 @@ M = {
 		},
 	},
 
-	-- Git shortcuts
-	{ "lewis6991/gitsigns.nvim", config = true },
+	{
+		"sindrets/diffview.nvim",
+		opts = {
+			file_panel = {
+				listing_style = "list",
+			},
+			view = {},
+		},
+	},
 
 	-- Git signs on the left side
-	{ "tpope/vim-fugitive", lazy = true, config = true },
+	{ "lewis6991/gitsigns.nvim", config = true },
+
+	-- Git shortcuts
+	{ "tpope/vim-fugitive" },
 
 	{
 		"FabijanZulj/blame.nvim",

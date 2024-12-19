@@ -6,9 +6,10 @@ M = {
 		"hrsh7th/nvim-cmp",
 		event = "InsertEnter",
 		dependencies = {
-			"saadparwaiz1/cmp_luasnip", -- Adds LSP completion capabilities
-			"hrsh7th/cmp-nvim-lsp", -- Adds a number of user-friendly snippetsvim
-			"onsails/lspkind.nvim", -- Format completion items with icons
+			"saadparwaiz1/cmp_luasnip",         -- Adds LSP completion capabilities
+			"hrsh7th/cmp-nvim-lsp",             -- Adds a number of user-friendly snippetsvim
+			"onsails/lspkind.nvim",             -- Format completion items with icons
+			"luckasRanarison/tailwind-tools.nvim", -- tailwind utilities
 		},
 		config = function()
 			local cmp = require("cmp")
@@ -19,28 +20,18 @@ M = {
 				window = {
 					completion = {
 						border = "rounded",
-						-- winhighlight = "Normal:Pmenu,CursorLine:CmpCursorLine",
-						-- winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:CmpCursorLine,Search:None",
-						-- col_offset = -3,
 						side_padding = 1,
 						scrollbar = false,
 					},
-					-- documentation = {
-					-- 	border = "rounded",
-					-- 	-- winhighlight = "Normal:CmpDoc,FloatBorder:CmpDoc,Search:None",
-					-- 	-- max_width = 80,
-					-- 	-- max_height = 12,
-					-- },
 					documentation = cmp.config.window.bordered(),
 				},
 				formatting = {
 					format = require("lspkind").cmp_format({
-						-- mode = "symbol", -- show only symbol annotations
-						maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-						-- can also be a function to dynamically calculate max width such as
-						-- maxwidth = function() return math.floor(0.45 * vim.o.columns) end,
-						ellipsis_char = "..", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
-						show_labelDetails = true, -- show labelDetails in menu. Disabled by default
+						mode = "symbol_text", -- show only symbol annotations
+						maxwidth = 50,
+						ellipsis_char = "..", -- if the item is too long, use this to truncate
+						show_labelDetails = true, -- show labelDetails in menu.
+						before = require("tailwind-tools.cmp").lspkind_format,
 					}),
 				},
 				sorting = { -- Very hard to find actual documentation on this
@@ -50,7 +41,6 @@ M = {
 						cmp.config.compare.recently_used,
 						cmp.config.compare.sort_text,
 						cmp.config.compare.score,
-						-- require("cmp-under-comparator").under,
 						cmp.config.compare.kind,
 						cmp.config.compare.length,
 						cmp.config.compare.order,
@@ -68,15 +58,6 @@ M = {
 						-- deactivated to not suggest on empty line when pressing enter
 						-- select = true,
 					}),
-					-- ["<Tab>"] = cmp.mapping(function(fallback)
-					-- 	if cmp.visible() then
-					-- 		cmp.select_next_item()
-					-- 	elseif luasnip.expand_or_locally_jumpable() then
-					-- 		luasnip.expand_or_jump()
-					-- 	else
-					-- 		fallback()
-					-- 	end
-					-- end, { "i", "s" }),
 					["<S-Tab>"] = cmp.mapping(function(fallback)
 						if cmp.visible() then
 							cmp.select_prev_item()
@@ -87,7 +68,10 @@ M = {
 				}),
 				sources = {
 					{ name = "nvim_lsp" },
-					{ name = "luasnip" },
+					{ name = "buffer",  keyword_length = 5 },
+					{ name = "calc" },
+					{ name = "path" },
+					{ name = "rg",      keyword_length = 5 },
 				},
 			})
 

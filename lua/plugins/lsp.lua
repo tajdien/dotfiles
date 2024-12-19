@@ -19,31 +19,16 @@ M = {
 			})
 
 			local servers = {
-				-- clangd = {},
-				-- gopls = {},
-				-- pyright = {},
-				-- rust_analyzer = {},
-				tsserver = {},
+				volar = {
+					filetypes = { "vue" },
+				},
 				eslint = {
-					{
-						bin = "eslint", -- or `eslint_d`
-						code_actions = {
+					code_actions = {
+						apply_on_save = {
 							enable = true,
-							apply_on_save = {
-								enable = true,
-								types = { "directive", "problem", "suggestion", "layout" },
-							},
-							disable_rule_comment = {
-								enable = true,
-								location = "separate_line", -- or `same_line`
-							},
+							types = { "directive", "problem", "suggestion", "layout" },
 						},
-						diagnostics = {
-							enable = true,
-							report_unused_disable_directives = false,
-							run_on = "save", -- or `save`
-						},
-					},
+					}
 				},
 				-- html = { filetypes = { 'html', 'twig', 'hbs'} },
 
@@ -89,9 +74,10 @@ M = {
 				nmap("<C-k>", vim.lsp.buf.signature_help, "Signature Documentation")
 
 				-- Create a command `:Format` local to the LSP buffer
-				-- vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
-				-- 	vim.lsp.buf.format()
-				-- end, { desc = "Format current buffer with LSP" })
+				vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
+					vim.lsp.buf.format()
+				end, { desc = "Format current buffer with LSP" })
+				nmap("<leader>=", "<cmd>Format<CR>", "Format buffer")
 			end
 
 			mason_lspconfig.setup({

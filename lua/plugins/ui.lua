@@ -5,16 +5,38 @@ M = {
 	{
 		"folke/noice.nvim",
 		event = "VeryLazy",
-		opts = {},
 		dependencies = {
-			"MunifTanjim/nui.nvim", --[[ "rcarriga/nvim-notify" ]]
+			"MunifTanjim/nui.nvim",
+			-- "rcarriga/nvim-notify",
+		},
+		opts = {
+			lsp = {
+				-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+				override = {
+					["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+					["vim.lsp.util.stylize_markdown"] = true,
+					["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+				},
+			},
+			presets = {
+				bottom_search = false, -- use a classic bottom cmdline for search
+				command_palette = true, -- position the cmdline and popupmenu together
+				long_message_to_split = true, -- long messages will be sent to a split
+				inc_rename = true, -- enables an input dialog for inc-rename.nvim
+				lsp_doc_border = true, -- add a border to hover docs and signature help
+			},
+			routes = {
+				{ view = "notify", filter = { event = "msg_showmode" } }, -- show "recording macro"
+				{ filter = { event = "msg_show", find = "written" }, opts = { skip = true } }, -- skip "write" message on save
+			},
 		},
 		-- stylua: ignore
 		keys = {
 					{ '<S-Enter>', function() require('noice').redirect(tostring(vim.fn.getcmdline())) end, mode = 'c', desc = 'Redirect Cmdline' },
-					{ '<leader>snl', function() require('noice').cmd('last') end, desc = 'Noice Last Message' },
-					{ '<leader>snh', function() require('noice').cmd('history') end, desc = 'Noice History' },
-					{ '<leader>sna', function() require('noice').cmd('all') end, desc = 'Noice All' },
+					{ '<leader>nl', function() require('noice').cmd('last') end, desc = 'Noice [L]ast Message' },
+					{ '<leader>nt', function() require('noice').cmd('telescope') end, desc = 'Noice [T]elescope' },
+					{ '<leader>nd', function() require('noice').cmd('dismiss') end, desc = 'Noice [D]ismiss' },
+					{ '<leader>ne', function() require('noice').cmd('errors') end, desc = 'Noice [E]rrors' },
 		},
 	},
 

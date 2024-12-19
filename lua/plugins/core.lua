@@ -1,9 +1,8 @@
 local M
 
 M = {
-	-- Colorscheme
 	{
-		"dracula/vim",
+		"maxmx03/dracula.nvim",
 		lazy = false,
 		priority = 1000,
 		opts = {},
@@ -12,14 +11,12 @@ M = {
 		end,
 	},
 
-	-- Scratch pad
+	-- better comments
 	{
-		"LintaoAmons/scratch.nvim",
+		"folke/ts-comments.nvim",
+		opts = {},
 		event = "VeryLazy",
-		keys = {
-			{ "<leader>snn", "<cmd>Scratch<cr>", desc = { "[s]ratch [n]ew" } },
-			{ "<leader>so", "<cmd>ScratchOpen<cr>", desc = { "[s]ratch [o]pen" } },
-		},
+		enabled = vim.fn.has("nvim-0.10.0") == 1,
 	},
 
 	-- Highlights the last undo and redo
@@ -48,11 +45,37 @@ M = {
 	-- Highlights text objects under cursor
 	{ "tzachar/local-highlight.nvim" },
 
-	-- turbo console log
-	{ "gaelph/logsitter.nvim", opts = {
-		path_format = "fileonly",
-		prefix = "📚",
-	} },
+	-- -- turbo console log
+	{
+		"Goose97/timber.nvim",
+		event = "VeryLazy",
+		config = function()
+			require("timber").setup({
+				-- log_templates = {
+				-- 	default = {
+				-- 		javascript = [[console.log("📚 %identifier", %identifier)]],
+				-- 		typescript = [[console.log("📚 %identifier", %identifier)]],
+				-- 		jsx = [[console.log("📚 %identifier", %identifier)]],
+				-- 		tsx = [[console.log("📚 %identifier", %identifier)]],
+				-- 		lua = [[print("📚 %identifier", %identifier)]],
+				-- 	},
+				-- },
+				keymaps = {
+					insert_log_below = "<leader>cl",
+				}
+			})
+		end
+	},
+	-- {
+	-- 	"gaelph/logsitter.nvim",
+	-- 	opts = {
+	-- 		path_format = "fileonly",
+	-- 		prefix = "📚",
+	-- 	},
+	-- 	keys = {
+	-- 		{ "<leader>cl", "<cmd>lua require('logsitter').log()<cr>", desc = "[L]og" }
+	-- 	}
+	-- },
 
 	-- Detect tabstop and shiftwidth automatically
 	{ "tpope/vim-sleuth" },
@@ -133,6 +156,26 @@ M = {
 		config = true,
 	},
 
+
+	{
+		"shortcuts/no-neck-pain.nvim",
+		version = "*"
+	},
+
+	{
+		'stevearc/overseer.nvim',
+		opts = {},
+	},
+
+	{
+		"rachartier/tiny-inline-diagnostic.nvim",
+		event = "VeryLazy",
+		priority = 1000,
+		config = function()
+			require('tiny-inline-diagnostic').setup()
+		end
+	},
+
 	{
 		"epwalsh/obsidian.nvim",
 		version = "*", -- recommended, use latest release instead of latest commit
@@ -155,43 +198,50 @@ M = {
 		},
 	},
 
-	-- Test runner
 	{
-		"nvim-neotest/neotest",
-		dependencies = {
-			"nvim-neotest/nvim-nio",
-			"antoinemadec/FixCursorHold.nvim",
-			"nvim-neotest/neotest-jest",
+		"ThePrimeagen/harpoon",
+		branch = "harpoon2",
+		opts = {
+			menu = { width = vim.api.nvim_win_get_width(0) - 4 },
+			settings = { save_on_toggle = true }
 		},
-		config = function()
-			require("neotest").setup({
-				discovery = { enabled = false },
-				output = { open_on_run = true },
-				adapters = {
-					require("neotest-jest")({
-						jestCommand = "npm test --",
-						jestConfigFile = function(file)
-							if string.find(file, "/packages/") then
-								return string.match(file, "(.-/[^/]+/)src") .. "jest.config.ts"
-							end
-
-							return vim.fn.getcwd() .. "/jest.config.ts"
-						end,
-						env = { CI = true },
-						cwd = function(path)
-							return vim.fn.getcwd()
-						end,
-					}),
+		keys = function()
+			local keys = {
+				{
+					"<leader>H",
+					function()
+						require("harpoon"):list():add()
+					end,
+					desc = "Harpoon File",
 				},
-			})
+				{
+					"<leader>h",
+					function()
+						local harpoon = require("harpoon")
+						harpoon.ui:toggle_quick_menu(harpoon:list())
+					end,
+					desc = "Harpoon Quick Menu",
+				},
+			}
+
+			for i = 1, 5 do
+				table.insert(keys, {
+					"<leader>" .. i,
+					function()
+						require("harpoon"):list():select(i)
+					end,
+					desc = "Harpoon to File " .. i,
+				})
+			end
+			return keys
 		end,
-		-- stylua: ignore
-		keys = {
-			{ "<leader>tr", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "run test" },
-			{ "<leader>tw", function() require("neotest").run.run({ jestCommand = "jest --watch " }) end, desc = "run test in watch" }, -- todo
-			{ "<leader>ts", function() require("neotest").summary.toggle() end, desc = "Toggle Summary" },
-      { "<leader>to", function() require("neotest").output_panel.toggle() end, desc = "Toggle Output Panel" },
-		},
+	},
+
+	{
+		'goolord/alpha-nvim',
+		config = function()
+			require 'alpha'.setup(require 'alpha.themes.dashboard'.config)
+		end
 	},
 }
 

@@ -47,12 +47,16 @@ map("n", "<leader>bo", "<Cmd>BufferCloseAllButCurrent<CR>", { desc = "Close all 
 -- nnoremap <silent>    <A-3> <Cmd>BufferGoto 3<CR>
 -- nnoremap <silent>    <A-0> <Cmd>BufferLast<CR>
 
--- Turbolog like .cl in webstorm
-map("n", "<leader>cl", "<cmd>lua require('logsitter').log()<cr>", { desc = "[L]og" })
-
 -- Scroll up and down
 map("n", "<ScrollWheelUp>", "<C-y>", { noremap = true })
 map("n", "<ScrollWheelDown>", "<C-e>", { noremap = true })
+
+-- Do not put the cursor back to selection
+map('v', 'v', 'vgy<Esc>', { noremap = true, silent = true })
+
+-- format
+map('n', '<leader>=', '<cmd>require ("conform").format { async = true, lsp_fallback = true }<cr>',
+	{ noremap = true, silent = true, desc = "Format the file" })
 
 -- TODO Install DAP
 -- Debug nearest test(s) under the cursor

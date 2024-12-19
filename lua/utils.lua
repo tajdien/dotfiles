@@ -1,12 +1,9 @@
--- Utility function for description + Package
 local M = {}
 
--- function M.lazyMap(keys, func, plugin, _desc)
--- 	if _desc then
--- 		_desc = plugin .. ": " .. _desc
--- 	end
---
--- 	return (keys, func, {desc = _desc})
--- end
+function M.setup(pkg)
+	return function()
+		require(pkg).setup()
+	end
+end
 
 return M

@@ -8,6 +8,7 @@ M = {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
 			"folke/neodev.nvim",
+			"saghen/blink.cmp"
 		},
 		config = function()
 			-- Order is important here
@@ -84,14 +85,10 @@ M = {
 				ensure_installed = vim.tbl_keys(servers),
 			})
 
-			-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
-
 			mason_lspconfig.setup_handlers({
 				function(server_name)
 					require("lspconfig")[server_name].setup({
-						capabilities = capabilities,
+						-- capabilities = capabilities,
 						on_attach = on_attach,
 						settings = servers[server_name],
 						filetypes = (servers[server_name] or {}).filetypes,
@@ -99,22 +96,7 @@ M = {
 				end,
 			})
 		end,
-		-- config = function()
-		-- 	local handlers = {
-		-- 		["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
-		-- 		["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
-		-- 	}
-		--
-		-- 	require("lspconfig").myserver.setup({ handlers = handlers })
-		-- end,
 	},
 }
-
--- require("mason").setup()
--- require("mason-lspconfig").setup()
-
--- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
 return M

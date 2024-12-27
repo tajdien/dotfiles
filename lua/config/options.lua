@@ -14,7 +14,7 @@ opt.softtabstop = 2
 opt.termguicolors = true -- TODO: was das
 opt.cursorline = true    -- Shows cursor in line
 
-opt.scrolloff = 10       -- Keep lines between cursor
+opt.scrolloff = 20       -- Keep lines between cursor
 
 -- obsidian.nvim
 -- https://github.com/epwalsh/obsidian.nvim/issues/286

@@ -102,32 +102,13 @@ M = {
 
 	-- Session management
 	{
-		"folke/persistence.nvim",
-		event = "BufReadPre",
-		opts = { options = vim.opt.sessionoptions:get() },
-		keys = {
-			{
-				"<leader>qs",
-				function()
-					require("persistence").load()
-				end,
-				desc = "Restore Session",
-			},
-			{
-				"<leader>ql",
-				function()
-					require("persistence").load({ last = true })
-				end,
-				desc = "Restore Last Session",
-			},
-			{
-				"<leader>qd",
-				function()
-					require("persistence").stop()
-				end,
-				desc = "Don't Save Current Session",
-			},
-		},
+		'rmagatti/auto-session',
+		lazy = false,
+		---@module "auto-session"
+		---@type AutoSession.Config
+		opts = {
+			suppressed_dirs = { '~/', '~/Projects', '~/Downloads', '/' },
+		}
 	},
 
 	-- Markdown preview in browser
@@ -142,12 +123,6 @@ M = {
 			{ "<leader>mp", "<cmd>MarkdownPreviewToggle<cr>", desc = "Markdown Preview" },
 		},
 	},
-
-	-- -- Simplify macro recording
-	-- {
-	-- 	"chrisgrieser/nvim-recorder",
-	-- 	opts = {},
-	-- },
 
 	-- Lua package manager
 	{
@@ -199,6 +174,18 @@ M = {
 	},
 
 	{
+		'rgroli/other.nvim',
+		opts = {
+			mappings = {
+				"react",
+			}
+		},
+		keys = {
+			{ "<leader>so", "<cmd>:Other<CR>", desc = "[O]ther" }
+		}
+	},
+
+	{
 		"ThePrimeagen/harpoon",
 		branch = "harpoon2",
 		opts = {
@@ -235,13 +222,6 @@ M = {
 			end
 			return keys
 		end,
-	},
-
-	{
-		'goolord/alpha-nvim',
-		config = function()
-			require 'alpha'.setup(require 'alpha.themes.dashboard'.config)
-		end
 	},
 }
 

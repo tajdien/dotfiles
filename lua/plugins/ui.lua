@@ -19,24 +19,24 @@ M = {
 				},
 			},
 			presets = {
-				bottom_search = false, -- use a classic bottom cmdline for search
-				command_palette = true, -- position the cmdline and popupmenu together
+				bottom_search = false,    -- use a classic bottom cmdline for search
+				command_palette = true,   -- position the cmdline and popupmenu together
 				long_message_to_split = true, -- long messages will be sent to a split
-				inc_rename = true, -- enables an input dialog for inc-rename.nvim
-				lsp_doc_border = true, -- add a border to hover docs and signature help
+				inc_rename = true,        -- enables an input dialog for inc-rename.nvim
+				lsp_doc_border = true,    -- add a border to hover docs and signature help
 			},
 			routes = {
-				{ view = "notify", filter = { event = "msg_showmode" } }, -- show "recording macro"
-				{ filter = { event = "msg_show", find = "written" }, opts = { skip = true } }, -- skip "write" message on save
+				{ view = "notify",                                   filter = { event = "msg_showmode" } }, -- show "recording macro"
+				{ filter = { event = "msg_show", find = "written" }, opts = { skip = true } },          -- skip "write" message on save
 			},
 		},
 		-- stylua: ignore
 		keys = {
-					{ '<S-Enter>', function() require('noice').redirect(tostring(vim.fn.getcmdline())) end, mode = 'c', desc = 'Redirect Cmdline' },
-					{ '<leader>nl', function() require('noice').cmd('last') end, desc = 'Noice [L]ast Message' },
-					{ '<leader>nt', function() require('noice').cmd('telescope') end, desc = 'Noice [T]elescope' },
-					{ '<leader>nd', function() require('noice').cmd('dismiss') end, desc = 'Noice [D]ismiss' },
-					{ '<leader>ne', function() require('noice').cmd('errors') end, desc = 'Noice [E]rrors' },
+			{ '<S-Enter>',  function() require('noice').redirect(tostring(vim.fn.getcmdline())) end, mode = 'c',                   desc = 'Redirect Cmdline' },
+			{ '<leader>nl', function() require('noice').cmd('last') end,                             desc = 'Noice [L]ast Message' },
+			{ '<leader>nt', function() require('noice').cmd('telescope') end,                        desc = 'Noice [T]elescope' },
+			{ '<leader>nd', function() require('noice').cmd('dismiss') end,                          desc = 'Noice [D]ismiss' },
+			{ '<leader>ne', function() require('noice').cmd('errors') end,                           desc = 'Noice [E]rrors' },
 		},
 	},
 
@@ -93,7 +93,7 @@ M = {
 	{
 		"romgrk/barbar.nvim",
 		dependencies = {
-			"lewis6991/gitsigns.nvim", -- optional: for git status
+			"lewis6991/gitsigns.nvim",  -- optional: for git status
 			"nvim-tree/nvim-web-devicons", -- optional: for file icons
 		},
 		init = function()
@@ -165,9 +165,38 @@ M = {
 			view_options = {
 				show_hidden = true,
 			},
+
+			preview = {
+				max_width = 0.9,
+				min_width = { 40, 0.4 },
+				width = nil,
+				max_height = 0.9,
+				min_height = { 5, 0.1 },
+				height = nil,
+				border = "rounded",
+				win_options = {
+					winblend = 0,
+				},
+			},
+
+
+
+			float = {
+				padding = 1,
+				max_width = 100,
+				max_height = 32,
+				border = "rounded",
+				win_options = {
+					winblend = 0,
+				},
+				override = function(conf)
+					return conf
+				end,
+				preview_split = 'right',
+			},
 		},
 		keys = {
-			{ "-", "<cmd>Oil<cr>", desc = "open oil" },
+			{ "-", "<cmd>Oil --float<cr>", desc = "open oil" },
 		},
 	},
 }

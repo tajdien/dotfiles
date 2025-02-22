@@ -16,7 +16,6 @@ M = {
 		"folke/ts-comments.nvim",
 		opts = {},
 		event = "VeryLazy",
-		enabled = vim.fn.has("nvim-0.10.0") == 1,
 	},
 
 	-- Highlights the last undo and redo
@@ -42,30 +41,19 @@ M = {
 		},
 	},
 
-	-- Highlights text objects under cursor
-	{ "tzachar/local-highlight.nvim" },
-
 	-- -- turbo console log
 	{
 		"Goose97/timber.nvim",
 		event = "VeryLazy",
 		config = function()
 			require("timber").setup({
-				-- log_templates = {
-				-- 	default = {
-				-- 		javascript = [[console.log("📚 %identifier", %identifier)]],
-				-- 		typescript = [[console.log("📚 %identifier", %identifier)]],
-				-- 		jsx = [[console.log("📚 %identifier", %identifier)]],
-				-- 		tsx = [[console.log("📚 %identifier", %identifier)]],
-				-- 		lua = [[print("📚 %identifier", %identifier)]],
-				-- 	},
-				-- },
 				keymaps = {
 					insert_log_below = "<leader>cl",
 				}
 			})
 		end
 	},
+
 	-- {
 	-- 	"gaelph/logsitter.nvim",
 	-- 	opts = {
@@ -76,9 +64,6 @@ M = {
 	-- 		{ "<leader>cl", "<cmd>lua require('logsitter').log()<cr>", desc = "[L]og" }
 	-- 	}
 	-- },
-
-	-- Detect tabstop and shiftwidth automatically
-	{ "tpope/vim-sleuth" },
 
 	-- copilot
 	{ "github/copilot.vim" },
@@ -129,17 +114,6 @@ M = {
 		"vhyrro/luarocks.nvim",
 		priority = 1000,
 		config = true,
-	},
-
-
-	{
-		"shortcuts/no-neck-pain.nvim",
-		version = "*"
-	},
-
-	{
-		'stevearc/overseer.nvim',
-		opts = {},
 	},
 
 	{

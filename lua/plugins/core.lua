@@ -11,6 +11,16 @@ M = {
     end,
   },
 
+  -- JetBrains like go-to-definition
+  {
+    "KostkaBrukowa/definition-or-references.nvim",
+    config = function()
+      require("definition-or-references").setup({
+        on_references_result = handle_references_response,
+      })
+    end,
+  },
+
   -- better comments
   {
     "folke/ts-comments.nvim",
@@ -60,14 +70,9 @@ M = {
     "folke/which-key.nvim",
     config = function()
       local whichKey = require("which-key")
-      whichKey.register({
-        ["<leader>c"] = { name = "[C]ode", _ = "which_key_ignore" },
-        ["<leader>d"] = { name = "[D]ocument", _ = "which_key_ignore" },
-        ["<leader>g"] = { name = "[G]it", _ = "which_key_ignore" },
-        ["<leader>h"] = { name = "More git", _ = "which_key_ignore" },
-        ["<leader>r"] = { name = "[R]ename", _ = "which_key_ignore" },
-        ["<leader>s"] = { name = "[S]earch", _ = "which_key_ignore" },
-        ["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
+      whichKey.setup({
+        preset = 'helix',
+        notify = false
       })
     end,
   },

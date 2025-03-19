@@ -7,7 +7,7 @@ M = {
     dependencies = {
       "nvim-lua/plenary.nvim", -- required
       "nvim-telescope/telescope.nvim",
-      "ibhagwan/fzf-lua",   -- optional
+      "ibhagwan/fzf-lua",      -- optional
     },
     config = true,
     opts = {

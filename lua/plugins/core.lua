@@ -11,14 +11,13 @@ M = {
     end,
   },
 
-  -- JetBrains like go-to-definition
   {
-    "KostkaBrukowa/definition-or-references.nvim",
-    config = function()
-      require("definition-or-references").setup({
-        on_references_result = handle_references_response,
-      })
-    end,
+    "zeioth/garbage-day.nvim",
+    dependencies = "neovim/nvim-lspconfig",
+    event = "VeryLazy",
+    opts = {
+      -- your options here
+    },
   },
 
   -- better comments
@@ -33,20 +32,6 @@ M = {
     "tzachar/highlight-undo.nvim",
     opts = {
       duration = 500,
-      undo = {
-        hlgroup = "HighlightUndo",
-        mode = "n",
-        lhs = "u",
-        map = "undo",
-        opts = {},
-      },
-      redo = {
-        hlgroup = "HighlightUndo",
-        mode = "n",
-        lhs = "U",
-        map = "redo",
-        opts = {},
-      },
       highlight_for_count = true,
     },
   },
@@ -58,12 +43,10 @@ M = {
       prefix = "📚",
     },
     keys = {
-      { "<leader>cl", "<cmd>lua require('logsitter').log()<cr>", desc = "[L]og" }
-    }
+      { "<leader>cl", "<cmd>lua require('logsitter').log()<cr>", desc = "[L]og" },
+    },
   },
 
-  -- copilot
-  { "github/copilot.vim" },
 
   -- show which keybinds are available
   {
@@ -71,30 +54,46 @@ M = {
     config = function()
       local whichKey = require("which-key")
       whichKey.setup({
-        preset = 'helix',
-        notify = false
+        preset = "helix",
+        notify = false,
       })
     end,
   },
 
   -- Session management
   {
-    'rmagatti/auto-session',
+    "rmagatti/auto-session",
     lazy = false,
     ---@module "auto-session"
     ---@type AutoSession.Config
     opts = {
-      suppressed_dirs = { '~/', '~/Projects', '~/Downloads', '/' },
-    }
+      suppressed_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
+      lazy_support = true,
+      bypass_save_filetypes = { "neotree" },
+    },
   },
 
   -- Markdown
   {
-    'MeanderingProgrammer/render-markdown.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
+    "MeanderingProgrammer/render-markdown.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
     ---@module 'render-markdown'
     ---@type render.md.UserConfig
-    opts = {},
+    opts = {
+      heading = {
+        icons = { '󰲡  ', '󰲣  ', '󰲥  ', '󰲧  ', '󰲩  ', '󰲫  ' },
+      }
+    },
+  },
+
+  {
+    'folke/lazydev.nvim',
+    ft = 'lua',
+    opts = {
+      library = {
+        '~/.local/share/nvim/lazy/',
+      },
+    },
   },
 
   -- Lua package manager
@@ -104,14 +103,47 @@ M = {
     config = true,
   },
 
+  -- copilot
+  -- { "github/copilot.vim" },
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({
+        panel = {
+          auto_refresh = true,
+          layout = {
+            position = "right",
+          },
+          keymap = {
+            open = "<C-CR>",
+          }
+        },
+        suggestion = {
+          auto_trigger = true,
+          keymap = {
+            accept = "<Tab>"
+          }
+        },
+        filetypes = {
+          yaml = true,
+          markdown = true,
+          gitcommit = true,
+          ["."] = true,
+        },
+      })
+    end,
+  },
+
   -- Render diagnostics in multiple lines
   {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = "VeryLazy",
     priority = 1000,
     config = function()
-      require('tiny-inline-diagnostic').setup()
-    end
+      require("tiny-inline-diagnostic").setup()
+    end,
   },
 
   -- Obsidian functionality
@@ -121,8 +153,8 @@ M = {
     lazy = true,
     -- ft = "markdown", -- settings this loads obsidian for all markdown files
     event = {
-      'BufReadPre ' .. vim.fn.expand '~' .. '/Documents/Vault/**.md',
-      'BufNewFile ' .. vim.fn.expand '~' .. '/Documents/Vault/**.md',
+      "BufReadPre " .. vim.fn.expand("~") .. "/Documents/Vault/**.md",
+      "BufNewFile " .. vim.fn.expand("~") .. "/Documents/Vault/**.md",
     },
     opts = {
       workspaces = {
@@ -133,21 +165,21 @@ M = {
       },
       ui = {
         enable = false,
-      }
+      },
     },
   },
 
   -- Open 'other' files
   {
-    'rgroli/other.nvim',
+    "rgroli/other.nvim",
     opts = {
       mappings = {
         "react",
-      }
+      },
     },
     keys = {
-      { "<leader>so", "<cmd>:Other<CR>", desc = "[O]ther" }
-    }
+      { "<leader>so", "<cmd>:Other<CR>", desc = "[O]ther" },
+    },
   },
 
   {
@@ -155,7 +187,7 @@ M = {
     branch = "harpoon2",
     opts = {
       menu = { width = vim.api.nvim_win_get_width(0) - 4 },
-      settings = { save_on_toggle = true }
+      settings = { save_on_toggle = true },
     },
     keys = function()
       local keys = {

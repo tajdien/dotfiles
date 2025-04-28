@@ -10,10 +10,16 @@ M = {
       -- explorer = { enabled = true }, -- file explorer
       picker = { -- telescope alternative
         enabled = true,
+        matcher = {
+          cwd_bonus = true,
+          frecency = true
+        }
       },
       scroll = { enabled = true }, -- smooth scroll
       bigfile = { enabled = true },
       toggle = { enabled = true },
+      terminal = { enabled = true },
+      images = { enabled = true },
       -- dashboard = { enabled = true },
       -- indent = { enabled = true },
       -- notifier = { enabled = true },
@@ -26,10 +32,11 @@ M = {
       local Snacks = require("snacks")
 
       return {
-        { "<leader><space>", function() Snacks.picker.smart() end,            desc = "Smart Find Files" },
-        { "<leader>sf",      function() Snacks.picker.smart() end,            desc = "Smart Find Files" },
+        { "<leader><space>", function() Snacks.picker.files() end,            desc = "Smart Find Files" },
+        { "<leader>sf",      function() Snacks.picker.files() end,            desc = "Smart Find Files" },
         { "<leader>,",       function() Snacks.picker.buffers() end,          desc = "Buffers" },
         { "<leader>sg",      function() Snacks.picker.grep() end,             desc = "Grep search with args" },
+        { "<leader>sG",      function() Snacks.picker.grep_buffers() end,     desc = "Grep search with args" },
         { "<leader>fg",      function() Snacks.picker.grep() end,             desc = "Grep search with args" },
         { "<leader>sr",      function() Snacks.picker.resume() end,           desc = "Grep search with args" },
         { "<leader>ss",      function() Snacks.picker.lsp_symbols() end,      desc = "LSP Symbols" },
@@ -40,6 +47,17 @@ M = {
         { "<leader>ff",      function() Snacks.picker.lines() end,            desc = "Buffer Lines" },
         { "gd",              function() Snacks.picker.lsp_definitions() end,  desc = "Goto Definition" },
         { "gD",              function() Snacks.picker.lsp_declarations() end, desc = "Goto Declaration" },
+
+
+        { "<leader>gb", function() Snacks.picker.git_branches() end, desc = "Git Branches" },
+        { "<leader>gl", function() Snacks.picker.git_log() end, desc = "Git Log" },
+        { "<leader>gL", function() Snacks.picker.git_log_line() end, desc = "Git Log Line" },
+        { "<leader>gs", function() Snacks.picker.git_status() end, desc = "Git Status" },
+        { "<leader>gS", function() Snacks.picker.git_stash() end, desc = "Git Stash" },
+        { "<leader>gd", function() Snacks.picker.git_diff() end, desc = "Git Diff (Hunks)" },
+        { "<leader>gf", function() Snacks.picker.git_log_file() end, desc = "Git Log File" },
+
+        { "<leader>t",       function() Snacks.terminal() end,                desc = "Terminal" },
 
         -- explorer
         -- { "<leader>e",       function() Snacks.explorer.open() end,          desc = "Open File Explorer" },

@@ -1,6 +1,7 @@
 local M
 
 M = {
+
   {
     -- LSP Configuration
     "neovim/nvim-lspconfig",
@@ -8,7 +9,7 @@ M = {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
       "folke/neodev.nvim",
-      "saghen/blink.cmp"
+      "saghen/blink.cmp",
     },
     config = function()
       -- Order is important here
@@ -23,20 +24,40 @@ M = {
         volar = {
           filetypes = { "vue" },
         },
+        azure_pipelines_ls = {
+          filetypes = { "yml", "yaml" },
+          yaml = {
+            schemas = {
+              ["https://raw.githubusercontent.com/microsoft/azure-pipelines-vscode/master/service-schema.json"] = {
+                "/azure-pipeline*.y*l",
+                "/*.azure*",
+                "Azure-Pipelines/**/*.y*l",
+                "pipelines/**/*.y*l",
+              },
+            },
+          },
+        },
         eslint = {
           code_actions = {
             apply_on_save = {
               enable = true,
               types = { "directive", "problem", "suggestion", "layout" },
             },
-          }
+          },
         },
         -- html = { filetypes = { 'html', 'twig', 'hbs'} },
 
         lua_ls = {
           Lua = {
-            workspace = { checkThirdParty = false },
-            telemetry = { enable = false },
+            workspace = {
+              checkThirdParty = false,
+              library = {
+                vim.env.VIMRUNTIME,
+                "$VIMRUNTIME",
+                "$XDG_DATA_HOME/nvim/lazy",
+                "${3rd}/luv/library",
+              }
+            },
             diagnostics = { disable = { "missing-fields" } }, -- disables "missing-fields" warning
           },
         },
@@ -55,11 +76,13 @@ M = {
 
         -- Lesser used LSP functionality
         nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-        nmap("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-        nmap("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
-        nmap("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
-        nmap("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
-        nmap("<leader>ss", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
+
+        -- TODO: Replace with Snacks.nvim
+        -- nmap("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+        -- nmap("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
+        -- nmap("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
+        -- nmap("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
+        -- nmap("<leader>ss", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
 
         -- Rename
         nmap("<leader>re", vim.lsp.buf.rename, "[R]e[n]ame")
@@ -90,6 +113,16 @@ M = {
             filetypes = (servers[server_name] or {}).filetypes,
           })
         end,
+      })
+    end,
+  },
+
+  -- JetBrains like go-to-definition
+  {
+    "KostkaBrukowa/definition-or-references.nvim",
+    config = function()
+      require("definition-or-references").setup({
+        on_references_result = handle_references_response,
       })
     end,
   },

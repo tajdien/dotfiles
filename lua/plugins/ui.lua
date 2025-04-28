@@ -60,6 +60,7 @@ M = {
     },
     opts = {
       close_if_last_window = true,
+      auto_clean_after_session_restore = false,
       filesystem = {
         window = {
           mapping_options = {
@@ -166,6 +167,8 @@ M = {
       view_options = {
         show_hidden = true,
       },
+
+      skip_confirm_for_simple_edits = true,
 
       preview = {
         max_width = 0.9,

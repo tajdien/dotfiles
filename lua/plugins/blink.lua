@@ -22,11 +22,6 @@ M = {
         default = { 'lsp', 'path', 'buffer' },
       },
 
-      -- optionally disable cmdline completions
-      -- cmdline = {
-      --   sources = {}
-      -- },
-
       -- experimental signature help support
       signature = { enabled = true },
       --

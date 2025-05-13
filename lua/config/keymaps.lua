@@ -9,7 +9,8 @@ map("n", "<C-w>Q", ":q!<CR>", { noremap = true, silent = true, desc = "Force clo
 map("x", "H", "^", { desc = "Beginning of line" })
 map("x", "L", "$", { desc = "End of line" })
 
-map("n", "U", "<C-r>", { desc = "Redo" }) -- Redo
+-- Redo
+map("n", "U", "<C-r>", { desc = "Redo" }) 
 
 -- Diagnostic ("Problems" from IDE) keymaps
 map("n", "<leader>p", vim.diagnostic.goto_next, { desc = "Next [P]roblem" })
@@ -42,10 +43,6 @@ map("n", "<leader>bc", "<cmd>BufferClose<cr>", { desc = "Close buffer" })
 map("n", "<A-s-w>", "<cmd>BufferRestore<cr>", { desc = "Restore Buffer" })
 map("n", "<leader>bp", "<Cmd>BufferPick<CR>", { desc = "Pick buffer" })
 map("n", "<leader>bo", "<Cmd>BufferCloseAllButCurrent<CR>", { desc = "Close all buffers but current" })
--- nnoremap <silent>    <A-1> <Cmd>BufferGoto 1<CR>
--- nnoremap <silent>    <A-2> <Cmd>BufferGoto 2<CR>
--- nnoremap <silent>    <A-3> <Cmd>BufferGoto 3<CR>
--- nnoremap <silent>    <A-0> <Cmd>BufferLast<CR>
 
 -- Scroll up and down
 map("n", "<ScrollWheelUp>", "<C-y>", { noremap = true })
